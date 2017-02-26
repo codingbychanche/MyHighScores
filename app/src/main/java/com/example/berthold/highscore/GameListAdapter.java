@@ -59,8 +59,8 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
             if (item.entryType== GameListEntry.LAST_ROW)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry_last_row, parent, false);
 
-            // If entry has scores:
-            if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE) {
+            // If entry has scores
+            if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE ) {
                 // Put data into view
                 final TextView tvName = (TextView) convertView.findViewById(R.id.tvGameName);
                 final TextView tvHighScore = (TextView) convertView.findViewById(R.id.tvHighScore);
@@ -92,9 +92,10 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
             if (item.entryType == GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET) {
 
                 // Entry has no scores:
-                final TextView tvName = (TextView) convertView.findViewById(R.id.tvNoScoreGameName);
+                final TextView tvName = (TextView) convertView.findViewById(R.id.tvGameName);
                 tvName.setText(item.gameName);
-
+                final ImageView i =(ImageView) convertView.findViewById(R.id.gameScreenShoot);
+                i.setImageBitmap(item.screenShoot);
             }
 
         // Event handler

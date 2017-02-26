@@ -15,11 +15,11 @@
         android:paddingBottom="5dp"
         android:paddingRight="5dp"
         android:paddingLeft="5dp"
-        android:layout_width="95pt"
-        android:layout_height="40pt" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/tvNoScoreGameName"
+        android:id="@+id/tvGameName"
         android:textSize="15dp"
         android:textStyle="bold"
         android:paddingLeft="10dp"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/your_highscore"
-        android:layout_below="@+id/tvNoScoreGameName"
+        android:layout_below="@+id/tvGameName"
         android:layout_toRightOf="@+id/gameScreenShoot"/>
 
 </RelativeLayout>

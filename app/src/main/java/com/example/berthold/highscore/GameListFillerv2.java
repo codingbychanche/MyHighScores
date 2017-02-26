@@ -14,13 +14,17 @@ package com.example.berthold.highscore;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.io.File;
 
 
-public class GameListFillerv2 implements Runnable {
+public class GameListFillerv2 implements Runnable{
 
     //public static   Bitmap bitmapOfScreenshoot;
 
@@ -171,11 +175,12 @@ public class GameListFillerv2 implements Runnable {
                                 //Uri path = Uri.parse(resultFromScores.toString().replace("#"," ").trim()); // Make Uri from string
                                 //bitmapOfScreenshoot = MediaStore.Images.Media.getBitmap(this.getContentResolver(), path);
 
-                                // Check if file exists
+                                // Check if image file exists
                                 if ((new File(path)).exists()) {
                                     metaData.inSampleSize = 10;       // Scale image down in size and reduce it's memory footprint
                                     bitmapOfScreenshoot = BitmapFactory.decodeFile(path, metaData);
                                 } else {
+                                    metaData.inSampleSize = 3;
                                     bitmapOfScreenshoot = BitmapFactory.decodeResource(c.getResources(), R.drawable.no_picture_taken_yet, metaData);
                                 }
                                 resultFromScores = DB.sqlRequest("select score from scores where key2=" + key1, MainActivity.conn);
@@ -184,13 +189,15 @@ public class GameListFillerv2 implements Runnable {
 
                                 if (resultFromScores.toString().equals("empty")) {
                                     entryType = GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET;
+                                    metaData.inSampleSize = 3;
+                                    bitmapOfScreenshoot = BitmapFactory.decodeResource(c.getResources(), R.drawable.click_to_add, metaData);
                                     numberOfScores = 0;
                                 }
 
                                 // Get and format date
                                 String formatedDate = FormatTimeStamp.german(date, FormatTimeStamp.WITH_TIME);
                                 // Add all data to list view
-                                GameListEntry e = new GameListEntry(entryType, numberOfScores, 0, r[1], maxScore, key1, 0, comment, evaluation, formatedDate, bitmapOfScreenshoot);
+                                GameListEntry e = new GameListEntry(entryType,numberOfScores, 0, r[1], maxScore, key1, 0, comment, evaluation, formatedDate, bitmapOfScreenshoot);
                                 gameList.add(e);
                             } // Entry exists?
                         }

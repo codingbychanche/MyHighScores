@@ -96,6 +96,7 @@ public class GameListFiller {
                                     } catch (Exception e) {
                                         maxScore = 0;
                                         entryType = GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET;
+
                                     }
 
                                     // Get comment

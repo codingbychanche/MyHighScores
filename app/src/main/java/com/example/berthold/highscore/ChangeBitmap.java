@@ -20,6 +20,7 @@ public class ChangeBitmap {
      * @param   b               Bitmap to process
      * @return  changedBitmap   Processed bitmap
      */
+
     public static Bitmap toRoundedImage(Bitmap b,DisplayMetrics m)
     {
         // Create a mutable bitmap

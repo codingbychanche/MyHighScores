@@ -17,6 +17,7 @@ public class GameListEntry {
     public static final int IS_ENTRY_WITH_SCORE=2;
     public static final int SEARCH_RESULT_NOT_FOUND=3;
     public static final int LAST_ROW=4;
+    public static final int IS_ENTRY_WITHOUT_SCREENSHOOT_YET=5;
     public int entryType;
 
     // Data
