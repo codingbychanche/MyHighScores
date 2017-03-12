@@ -74,6 +74,7 @@ public class CreateDB {
 								+ "score int,"
 								+ "comment char (255),"
 								+ "evaluation char (255),"
+								+ "magic int,"
 								+ "picture char(255))");
 			
 			// Create sample entry in games

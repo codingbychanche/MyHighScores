@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSepparator">#cccccc</color>
+    <color name="colorShellOutput">#006400</color>"
+    <color name="shellText">#7fff00</color>
 </resources>

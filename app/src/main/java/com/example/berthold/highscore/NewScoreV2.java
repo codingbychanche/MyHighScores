@@ -9,30 +9,25 @@ package com.example.berthold.highscore;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewDebug;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.net.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class NewScore extends AppCompatActivity {
+public class NewScoreV2 extends AppCompatActivity {
 
     int IMAGE_CAPTURE=1;     // Req- code for camera usage
 
@@ -83,15 +78,9 @@ public class NewScore extends AppCompatActivity {
                 String c=gameCommentFieldO.getText().toString();
                 String e=gameEvaluationO.getText().toString();
 
-                // If score is not 0, then save it and restart this activity.
+                // If score is not 0, then save it and leave this activity.
                 if (!s.equals("") && score !=0) {
                     saveScore(score,c,e);
-
-                    File f = getFilesDir();
-                    String path = (f.getAbsolutePath() + "/"+name);
-
-                    DB.insert("update scores set picture='"+path+"' where key1="+pictureKey,MainActivity.conn);
-                    System.out.println("+++++++++++++ Picture written to database:"+pic+"for key1"+pictureKey);
 
                     finish();
 
@@ -116,7 +105,7 @@ public class NewScore extends AppCompatActivity {
                 String c=gameCommentFieldO.getText().toString();
                 String e=gameEvaluationO.getText().toString();
 
-                // If input was not empty and it's value was not 0, take picture and save pic. in DB
+                // If input was not empty and it's value was not 0, take picture
                 if (!s.equals("") && score !=0 ){
                     startCamara();
                 }
@@ -164,30 +153,19 @@ public class NewScore extends AppCompatActivity {
      * @param   score       Value of score to be saved
      * @param   comment     A comment e.g. Difficulty: hard....
      * @param   evaluation  An game speciefic evaluation,like: "Star cook first class" or "Best ever..."
-     * @return  key1        If score was saved, return key1- value for the entry generated
+     * @global  pic         Picture path of screenshoot
      *
      */
 
     private void saveScore(int score,String comment,String evaluation)
     {
-        // Get key1- value of game selected
-        // Each entry in 'scores' will be: key2=key1
 
-        //todo test
-        //DB.insert("insert into scores (key2,score,date,comment,evaluation) values " +
-        // "("+key1+"," + score +",CURRENT_TIMESTAMP,'"+comment+"','"+evaluation+"')", MainActivity.conn);
+        DB.insert("insert into scores (key2,score,date,comment,evaluation,picture) values " +
+                    "("+key1+"," + score +",CURRENT_TIMESTAMP,'"+comment+"','"+evaluation+"','"+pic+"')", MainActivity.conn);
 
-        DB.insert("insert into scores (key2,score,date,comment,evaluation) values " +
-                "(" + key1 + "," + score + ",CURRENT_TIMESTAMP,'" + comment + "','" + evaluation + "')", MainActivity.conn);
+        Log.d("myDebug ","Saved score. Picture Path "+pic);
+
         savePositive();
-
-
-        //todo: Obsolete, I hope so......
-        //return DB.getKey1("scores","score",String.valueOf(score),MainActivity.conn);
-        //StringBuffer r=DB.sqlRequest("select score from scores where magic=999",MainActivity.conn);
-        //String rs = r.toString().replace("#", "").trim();
-        //System.out.println("mydebug Save Score, key1 retrieved:"+rs);
-        //return 0;
     }
 
     /**
@@ -219,7 +197,7 @@ public class NewScore extends AppCompatActivity {
     {
         // Before we leave, we need to send key1 back to list per game
 
-        Intent in=new Intent(NewScore.this,ScoreListPerGame.class);
+        Intent in=new Intent(NewScoreV2.this,ScoreListPerGame.class);
         in.putExtra("key1",key1);
         in.putExtra("name",name);
 
@@ -272,12 +250,12 @@ public class NewScore extends AppCompatActivity {
                     b = BitmapFactory.decodeFile(path, metaData);
                     photo.setImageBitmap(b);
 
-                    // Uri to string and store it
-                    pic=imageS.toString();
+                    // Set global picture path
+                    pic=path;
+                    Log.d("myDebug ","Picture Path "+path);
 
                 } catch (IOException e) {
-                    Log.d("-----","Could not save image");
-                    //finish();
+                    Log.d("myDebug ","Could not save image");
                 }
             }
         }

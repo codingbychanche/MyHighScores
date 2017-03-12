@@ -24,10 +24,18 @@
         android:text="@string/licence"/>
 
     <ImageView
+        android:id="@+id/ccBY"
         android:paddingTop="10dp"
         android:layout_below="@+id/license"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/cc_by"/>
+
+    <Button
+        android:id="@+id/debugConsole"
+        android:layout_alignParentBottom="true"
+        android:text="SQL- Konsole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.util.Log;
 
 import java.io.File;
 
@@ -99,7 +100,7 @@ public class GameListFillerv2 implements Runnable{
                 });
             }
 
-            final StringBuffer resultFromGames = DB.sqlRequest("select key1,name,picture from games where name like '%" + search + "%' order by name", MainActivity.conn);
+            final StringBuffer resultFromGames = DB.sqlRequest("select key1,name,picture from games where name like '%" + search + "%' order by name DESC", MainActivity.conn);
             final String[] rsGames = resultFromGames.toString().split("#");
 
             if (!rsGames[0].equals("empty")) // Search result found?
@@ -162,9 +163,15 @@ public class GameListFillerv2 implements Runnable{
                                 date = resultFromScores.toString().replace("#", "").trim();
 
                                 // Get screenshoot
-                                resultFromScores = DB.sqlRequest("select picture from scores where score=(select max(score) from scores where key2=" + key1 + ")", MainActivity.conn);
+                                // This command will return the picture path for the games (key1) max score
+                                // 'max(score)' will get the highest score from scores....
+                                resultFromScores=DB.sqlRequest("select picture,max(score) from scores where key2="+key1, MainActivity.conn);
 
-                                String path = resultFromScores.toString().replace("#", " ").trim();
+                                String p[]=resultFromScores.toString().split(",");
+
+                                // p[0] is the picture path. p[1] is the max score. The later one is not used....
+                                String path = p[0].toString().replace("#", " ").trim();
+                                Log.d ("myDebug ","Game list fille, found picture path for item "+path);
 
                                 // This is the time consuming part!
                                 BitmapFactory.Options metaData = new BitmapFactory.Options();

@@ -174,6 +174,7 @@ public class DB {
 		return false;
 	}
 
+
 	/**
 	 * Get key 1 Value
 	 *
@@ -185,6 +186,7 @@ public class DB {
 	{
 		StringBuffer rs = DB.sqlRequest("select key1 from "+table+" where "+column+"='"+value+"'",conn);
 		String r = rs.toString().replace("#", "").trim();
+		System.out.println("------+++++++++++++++getkey1:"+value);
 		try {
 			int key1 = Integer.parseInt(r);
 			return key1;
@@ -192,4 +194,6 @@ public class DB {
 			return 0;
 		}
 	}
+
+
 }

@@ -100,7 +100,6 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
         // Event handler
         // This method is called, when the list item was clicked
-
         if (item.entryType!=item.LAST_ROW) { // Info items may not be set on the click listener!
 
             convertView.setTag(position);
@@ -117,7 +116,6 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
                     GameListEntry i = getItem(pos);
 
                     // Show all scores for the selected game
-
                     Intent in = new Intent(v.getContext(), ScoreListPerGame.class);
                     in.putExtra("key1", key1);
                     in.putExtra("name", nameOfSelectedGame);

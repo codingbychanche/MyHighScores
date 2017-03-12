@@ -95,7 +95,7 @@ public class NewGame extends AppCompatActivity {
                     int key1=DB.getKey1("games","name",name,MainActivity.conn);
 
                     // Now enter score for this game....
-                    Intent i = new Intent(NewGame.this, NewScore.class);
+                    Intent i = new Intent(NewGame.this, NewScoreV2.class);
 
                     // This flag destroy's the activity from which this activity
                     // was started from, if it is still running.

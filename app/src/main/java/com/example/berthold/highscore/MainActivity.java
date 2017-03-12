@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -194,18 +196,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Search button + search text field
-        final ImageButton searchGame=(ImageButton)findViewById(R.id.do_search_button);
+        // Search
 
-        searchGame.setOnClickListener(new View.OnClickListener() {
+        final EditText searchText=(EditText)findViewById(R.id.search);
+        searchText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                    updateHighscoreList(gameList,progressInfo);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchTerm=getSearchTerm();
+                updateHighscoreList(gameList,progressInfo);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 
         // Init search field
-        setSearchTerm(searchTerm);
+        searchTerm=getSearchTerm();
+        updateHighscoreList(gameList,progressInfo);
 
         // Reset search button
         ImageButton resetSearch=(ImageButton)findViewById(R.id.reset_search_button);
@@ -215,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final EditText searchText=(EditText)findViewById(R.id.search);
                 searchText.setText("");
-
+                searchTerm=getSearchTerm();
                 updateHighscoreList(gameList,progressInfo);
             }
         });

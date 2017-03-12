@@ -64,7 +64,7 @@ public class ScoreListPerGame extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), NewScore.class);
+                Intent i = new Intent(view.getContext(), NewScoreV2.class);
                 i.putExtra("key1", key1);
                 i.putExtra("name", name);
                 view.getContext().startActivity(i);
@@ -72,7 +72,7 @@ public class ScoreListPerGame extends AppCompatActivity {
         });
 
         // Get data
-        StringBuffer result = DB.sqlRequest("select score,date from scores where key2=" + key1 + " order by date", MainActivity.conn);
+        StringBuffer result = DB.sqlRequest("select score,date from scores where key2=" + key1 + " order by date DESC", MainActivity.conn);
         String[] rs = result.toString().split("#");     // Get rows
         StringBuffer niceResult=new StringBuffer();     // Will contain date and score in a user- readable format
 
@@ -94,9 +94,6 @@ public class ScoreListPerGame extends AppCompatActivity {
             myListView.setAdapter(myListAdapter);
 
         } else fab.startAnimation(animation);
-
-
-
 
     }
 }

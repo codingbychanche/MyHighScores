@@ -30,24 +30,34 @@
         android:layout_alignParentLeft="true" />
 
     <TextView
-        android:id="@+id/scoreCount"
-        android:layout_centerInParent="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:paddingRight="10dp"
-        android:layout_toRightOf="@id/nameOfGame"/>
-
-
-    <TextView
         android:id="@+id/tvGameName"
-        android:textSize="15dp"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:paddingLeft="10dp"
         android:layout_toRightOf="@id/gameScreenShoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_toRightOf="@id/nameOfGame"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_media_play"/>
+
+        <TextView
+            android:id="@+id/scoreCount"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:paddingRight="1dp"
+            android:layout_toLeftOf="@id/arrow"/>
+
+
 
     <TextView
         android:id="@+id/tvHighScore"

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_debug_dbadmin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.berthold.highscore.DebugDBAdmin">
+
+    <TextView
+        android:id="@+id/shellOutput"
+        android:layout_width="match_parent"
+        android:layout_height="100pt"
+        android:textColor="@color/shellText"
+        android:background="@color/colorShellOutput"/>
+
+    <EditText
+        android:id="@+id/shellInput"
+        android:paddingTop="20dp"
+        android:textColor="@color/shellText"
+        android:background="@color/colorShellOutput"
+        android:layout_below="@id/shellOutput"
+        android:hint="SQL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/insertSelect"
+        android:text="select"
+        android:layout_below="@id/shellInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/insertFrom"
+        android:text="from"
+        android:layout_below="@id/shellInput"
+        android:layout_toRightOf="@id/insertSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/insertWhere"
+        android:text="where"
+        android:layout_below="@id/insertSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/insertEqual"
+        android:text="="
+        android:layout_toRightOf="@id/insertWhere"
+        android:layout_below="@id/insertSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/insertlike"
+        android:text="like"
+        android:layout_toRightOf="@id/insertEqual"
+        android:layout_below="@id/insertSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/runSql"
+        android:layout_below="@id/insertWhere"
+        android:src="@android:drawable/ic_media_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/clearCommand"
+        android:layout_below="@id/insertWhere"
+        android:layout_toRightOf="@id/runSql"
+        android:src="@android:drawable/ic_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

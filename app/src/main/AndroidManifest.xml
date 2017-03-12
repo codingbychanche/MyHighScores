@@ -21,28 +21,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".NewGame"
-            android:noHistory="true"
             android:label="@string/title_activity_new_game"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name=".NewScore"
+            android:name=".NewScoreV2"
             android:label="@string/title_activity_new_score"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".GameDelete"
-            android:label="Spiel löschen..."></activity>
-        <activity android:name=".ScoreListPerGame"></activity>
-
-        <activity android:name=".About"></activity>
-
+            android:label="Spiel löschen..." />
+        <activity android:name=".ScoreListPerGame" />
+        <activity android:name=".About" />
+        <activity android:name=".DebugDBAdmin" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".DebugDBAdmin"></activity>
     </application>
 
 </manifest>
