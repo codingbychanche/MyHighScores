@@ -16,14 +16,23 @@
         android:layout_width="match_parent"
         android:layout_height="100pt"
         android:textColor="@color/shellText"
+        android:scrollbars="vertical"
+        android:maxLines="15"
         android:background="@color/colorShellOutput"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_below="@id/shellOutput"
+        android:layout_height="5dp"
+        android:background="@color/colorPrimaryDark"/>
 
     <EditText
         android:id="@+id/shellInput"
-        android:paddingTop="20dp"
         android:textColor="@color/shellText"
         android:background="@color/colorShellOutput"
-        android:layout_below="@id/shellOutput"
+        android:layout_below="@id/line"
+        android:lines="3"
         android:hint="SQL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -37,10 +46,18 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/insertStar"
+        android:text="*"
+        android:layout_toRightOf="@id/insertSelect"
+        android:layout_below="@id/shellInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
         android:id="@+id/insertFrom"
         android:text="from"
         android:layout_below="@id/shellInput"
-        android:layout_toRightOf="@id/insertSelect"
+        android:layout_toRightOf="@id/insertStar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -58,24 +75,40 @@
         android:layout_below="@id/insertSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <Button
-        android:id="@+id/insertlike"
-        android:text="like"
+        android:id="@+id/insertHyp"
+        android:text="'"
         android:layout_toRightOf="@id/insertEqual"
         android:layout_below="@id/insertSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/insertPercent"
+        android:text="%"
+        android:layout_toRightOf="@id/insertHyp"
+        android:layout_below="@id/insertSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/insertlike"
+        android:text="like"
+        android:layout_below="@id/insertWhere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <ImageButton
         android:id="@+id/runSql"
-        android:layout_below="@id/insertWhere"
+        android:layout_below="@id/insertlike"
         android:src="@android:drawable/ic_media_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <ImageButton
         android:id="@+id/clearCommand"
-        android:layout_below="@id/insertWhere"
+        android:layout_below="@id/insertlike"
         android:layout_toRightOf="@id/runSql"
         android:src="@android:drawable/ic_delete"
         android:layout_width="wrap_content"

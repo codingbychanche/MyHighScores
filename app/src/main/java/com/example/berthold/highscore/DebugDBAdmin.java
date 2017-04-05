@@ -11,8 +11,10 @@ package com.example.berthold.highscore;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.*;
+import android.text.method.BaseMovementMethod;
 
 public class DebugDBAdmin extends AppCompatActivity {
 
@@ -30,12 +32,15 @@ public class DebugDBAdmin extends AppCompatActivity {
         ImageButton startConsole=(ImageButton) findViewById(R.id.runSql);
         final EditText sqlCommand=(EditText) findViewById(R.id.shellInput);
         final TextView output=(TextView) findViewById(R.id.shellOutput);
+        output.setMovementMethod (new ScrollingMovementMethod());
 
         startConsole.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StringBuffer result=DB.sqlRequest(sqlCommand.getText().toString(),MainActivity.conn);
-                output.append("\n"+result.toString());
+                String r=result.toString().replace("#","\n");
+                output.append("\n"+r);
+
             }
         });
 
@@ -96,5 +101,44 @@ public class DebugDBAdmin extends AppCompatActivity {
             }
         });
 
+        // Star
+        Button insertStar=(Button) findViewById(R.id.insertStar);
+
+        insertStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqlCommand.append("*");
+            }
+        });
+
+        // '
+        Button insertHyp=(Button) findViewById(R.id.insertHyp);
+
+        insertHyp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqlCommand.append("'");
+            }
+        });
+
+        // Like
+        Button insertLike=(Button) findViewById(R.id.insertlike);
+
+        insertLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqlCommand.append("like");
+            }
+        });
+
+        // %
+        Button insertPerc=(Button) findViewById(R.id.insertPercent);
+
+        insertPerc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqlCommand.append("%");
+            }
+        });
     }
 }

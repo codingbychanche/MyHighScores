@@ -165,16 +165,14 @@ public class GameListFillerv2 implements Runnable{
                                 // Get screenshoot
                                 // This command will return the picture path for the games (key1) max score
                                 // 'max(score)' will get the highest score from scores....
-                                resultFromScores=DB.sqlRequest("select picture,max(score) from scores where key2="+key1, MainActivity.conn);
+                                resultFromScores = DB.sqlRequest("select picture from scores where score=(select max(score) from scores where key2=" + key1 + ") and key2="+key1, MainActivity.conn);
 
-                                String p[]=resultFromScores.toString().split(",");
+                                String path = resultFromScores.toString().replace("#", " ").trim();
 
-                                // p[0] is the picture path. p[1] is the max score. The later one is not used....
-                                String path = p[0].toString().replace("#", " ").trim();
-                                Log.d ("myDebug ","Game list fille, found picture path for item "+path);
+                                BitmapFactory.Options metaData = new BitmapFactory.Options();
+                                metaData.inJustDecodeBounds = false;
 
                                 // This is the time consuming part!
-                                BitmapFactory.Options metaData = new BitmapFactory.Options();
                                 metaData.inJustDecodeBounds = false;
                                 Bitmap bitmapOfScreenshoot;
 
