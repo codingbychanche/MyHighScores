@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class About extends AppCompatActivity {
 
@@ -15,6 +16,12 @@ public class About extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        // Show database info
+        // You can run all sorts of statistics here and display them
+
+        TextView dataBaseInfoO=(TextView)findViewById(R.id.dataBaseInfo);
+        dataBaseInfoO.setText("Spiele insgesammt:"+DB.getNumberOfRows("games",MainActivity.conn)+"\n");
+        dataBaseInfoO.append("Erfasste Punkte:"+DB.getNumberOfRows("scores",MainActivity.conn)+"\n");
 
         // Start SQL- Console?
 

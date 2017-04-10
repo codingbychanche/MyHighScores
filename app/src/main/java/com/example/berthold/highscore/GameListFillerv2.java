@@ -74,6 +74,15 @@ public class GameListFillerv2 implements Runnable{
         if (threadsRunning ==0) {   // Check if already running
 
             threadsRunning++;
+
+            h.post(new Runnable() {
+                @Override
+                public void run() {
+                    gameList.clear();
+
+                }
+            });
+
             System.out.println("--------------------------- länge"+gameList.getCount());
 
             // Check if a search item was passed:
@@ -86,7 +95,7 @@ public class GameListFillerv2 implements Runnable{
             // difference for the time being:
             // todo: save/ load 'gameList' in instance state
 
-            if (search.equals(" ")){
+            if (search.equals("")){
                 search = "%";
             } else{
 
@@ -107,7 +116,6 @@ public class GameListFillerv2 implements Runnable{
             {
 
                 // Fill highscore list
-
                 for (int n = 0; n <= rsGames.length - 1; n++) {
                     h.post(new Runnable() {
 
@@ -244,7 +252,7 @@ public class GameListFillerv2 implements Runnable{
                     gameList.add(e);
                     progressInfo.setText("");
 
-                    // todo: Cool, this code changes the items screenshoot and updates the list...
+                    // todo: Cool, this code changes the items screenshoot directly and updates the list...
                     //GameListEntry ee=gameList.getItem(1);
                     //ee.screenShoot=null;
 

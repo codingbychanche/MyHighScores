@@ -65,6 +65,7 @@
             android:layout_width="0pt"
             android:layout_weight="1"
             android:maxLines="1"
+            android:background="@null"
             android:hint="Search" />
 
         <ImageButton
@@ -77,20 +78,11 @@
             android:layout_height="match_parent"
             />
 
-        <ImageButton
-            android:id="@+id/settings_button"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:src="@android:drawable/ic_menu_set_as"
-            android:background="@color/colorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            />
-
         </LinearLayout>
 
         <TextView
             android:id="@+id/progressInfo"
+            android:paddingLeft="25dp"
             android:layout_below="@id/top"
             android:textColor="@color/colorAccent"
             android:background="@color/colorPrimaryDark"

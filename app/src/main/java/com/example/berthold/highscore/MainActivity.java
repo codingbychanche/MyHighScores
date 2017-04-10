@@ -28,6 +28,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Logcat
+
+    private static String debug;
+
     // Database
 
     public static Connection conn;
@@ -58,13 +62,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create DB
-
         String dbName = "/highscores";
 
         File f = getFilesDir();
         path = (f.getAbsolutePath() + dbName);
-
-        System.out.println("+++++++++Is there" + (new File(path).exists() && new File(path).isFile()));
 
         try {
             CreateDB.make(path);
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Read DB
-
         String DB_DRIVER = "org.h2.Driver";
         String DB_CONNECTION = "jdbc:h2:" + path;
         String DB_USER = "";
@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(view.getContext(), GameDelete.class);
+                in.putExtra("sql",getSearchTerm());
                 view.getContext().startActivity(in);
-
             }
         });
     }
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
      * Is called when the user leaves this activity or the screen orientation
      * is changed.
      *
-     * In this case 'onPause' or 'onStopp' is called as well.
+     * In this case 'onPause' or 'onStop' is called as well.
      *
      */
 
@@ -182,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
         // Progress info
         final TextView progressInfo=(TextView)findViewById(R.id.progressInfo);
 
-
         // Show game list
+
         updateHighscoreList(gameList,progressInfo);
 
         // Info button
@@ -207,18 +207,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchTerm=getSearchTerm();
-                updateHighscoreList(gameList,progressInfo);
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                updateHighscoreList(gameList,progressInfo);
+
             }
         });
 
         // Init search field
-        searchTerm=getSearchTerm();
         updateHighscoreList(gameList,progressInfo);
 
         // Reset search button
@@ -228,8 +227,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText searchText=(EditText)findViewById(R.id.search);
-                searchText.setText("");
-                searchTerm=getSearchTerm();
+                //searchText.setText("");
+                searchText.getText().clear();
                 updateHighscoreList(gameList,progressInfo);
             }
         });
@@ -256,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
     public String getSearchTerm()
     {
         final EditText searchText=(EditText)findViewById(R.id.search);
+        System.out.println("----------+++++++++++"+searchText.getText().toString());
         return searchText.getText().toString();
     }
 

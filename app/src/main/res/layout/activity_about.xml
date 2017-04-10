@@ -12,6 +12,7 @@
 
     <TextView
         android:id="@+id/name"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="51dp"
         android:text="@string/info"/>
@@ -29,7 +30,28 @@
         android:layout_below="@+id/license"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
         android:src="@drawable/cc_by"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ccBY"
+        android:paddingBottom="10dp"
+        android:background="@color/colorSepparator">
+    </View>
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_below="@+id/ccBY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/databaseInfo"/>
+    <TextView
+        android:id="@+id/dataBaseInfo"
+        android:layout_below="@id/infoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/debugConsole"
@@ -37,5 +59,13 @@
         android:text="SQL- Konsole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/debugConsole"
+        android:paddingBottom="10dp"
+        android:background="@color/colorSepparator">
+    </View>
 
 </RelativeLayout>

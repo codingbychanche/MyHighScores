@@ -15,9 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import android.util.Log;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,13 +28,41 @@ public class GameDelete extends AppCompatActivity {
 
     private ListView myListView;
     private ArrayAdapter myListAdapter;
-    private boolean yesNoResult;  // Yes no dialog result
+    private boolean yesNoResult;     // Yes no dialog result
     private String name;
+    private String sql;              // Sql query
+    private String searchTerm;       // Seach term if passed
+
+    /**
+     * On Create
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_delete);
+
+        // Get and display search term, if given
+        // Set sql query accordingly
+
+        Bundle extra= getIntent().getExtras();
+        TextView progressInfo=(TextView)findViewById(R.id.progressInfo);
+
+        try {
+            searchTerm = extra.getString("sql");
+
+            if (searchTerm.isEmpty()) {
+                sql = "select name from games order by name";
+                progressInfo.setText(R.string.showingAll);
+            } else {
+                progressInfo.setText(R.string.showingSelection);
+                progressInfo.append("'" + searchTerm + "'");
+                sql = "select name from games where name like '%" + searchTerm + "%'";
+            }
+        }catch (Exception e){
+            sql = "select name from games order by name";
+            progressInfo.setText(R.string.showingAll);
+        }
 
         // Confirm Dialog
 
@@ -52,7 +82,7 @@ public class GameDelete extends AppCompatActivity {
 
         // Get data
 
-        StringBuffer result=DB.sqlRequest("select name from games order by name", MainActivity.conn);
+        StringBuffer result=DB.sqlRequest(sql, MainActivity.conn);
         String [] rs=result.toString().split("#");
 
         // Show List
@@ -74,6 +104,19 @@ public class GameDelete extends AppCompatActivity {
 
                 name = ((TextView) view).getText().toString();
 
+            }
+        });
+
+        // Remove Filter
+
+        FloatingActionButton removeFilter = (FloatingActionButton) findViewById(R.id.removeFilter);
+        removeFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchTerm="";
+                Intent i=new Intent(GameDelete.this,GameDelete.class);
+                startActivity(i);
+                finish();
             }
         });
     }
@@ -103,7 +146,10 @@ public class GameDelete extends AppCompatActivity {
                 s.executeUpdate("delete from scores where key2=" + key1);
 
                 // Restart activity (and show updated list of games to allow another one
-                // to ew deleted or to go back to main
+                // to be deleted or to go back to main
+
+
+                searchTerm="";
                 Intent i=new Intent(GameDelete.this,GameDelete.class);
                 startActivity(i);
                 finish();

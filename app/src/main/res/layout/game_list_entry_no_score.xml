@@ -22,7 +22,7 @@
         android:id="@+id/tvGameName"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:paddingLeft="10dp"
+        android:paddingLeft="25dp"
         android:layout_toRightOf="@id/gameScreenShoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
