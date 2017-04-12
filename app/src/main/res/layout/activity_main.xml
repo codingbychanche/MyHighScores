@@ -47,7 +47,7 @@
         android:background="@color/colorPrimary"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <ImageButton
@@ -61,7 +61,7 @@
         <EditText
             android:id="@+id/search"
             android:paddingLeft="20dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="0pt"
             android:layout_weight="1"
             android:maxLines="1"
@@ -84,10 +84,15 @@
             android:id="@+id/progressInfo"
             android:paddingLeft="25dp"
             android:layout_below="@id/top"
-            android:textColor="@color/colorAccent"
-            android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/progressInfo"
+            android:background="@color/colorSepparator">
+        </View>
 
         <ListView
             android:id="@+id/list"

@@ -29,8 +29,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     // Logcat
-
-    private static String debug;
+    private static String tag;
 
     // Database
 
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Get saved instance state
-
         if (savedInstanceState != null) {
            searchTerm=savedInstanceState.getString("searchTerm");
             System.out.println("------Instance State loaded");
@@ -60,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Layout
         setContentView(R.layout.activity_main);
+
+        // Debug
+        tag="Debug: Main";
 
         // Create DB
         String dbName = "/highscores";
@@ -83,16 +84,15 @@ public class MainActivity extends AppCompatActivity {
         String DB_PASSWORD = "";
 
         try {
-            Log.i("---", "Reading:" + DB_CONNECTION + "\n");
+            Log.d(tag, "Reading:" + DB_CONNECTION + "\n");
             conn = DB.read(DB_DRIVER, DB_CONNECTION, DB_USER, DB_PASSWORD);
 
         } catch (Exception e) {
-            Log.i("---", "Error opening DB\n");
-            Log.i("---", e.toString());
+            Log.d(tag, "Error opening DB\n");
+            Log.d(tag, e.toString());
         }
 
         // Floating button, add a new game
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Floating button, delete (game)
-
         FloatingActionButton delete = (FloatingActionButton) findViewById(R.id.delete_game);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("searchTerm",getSearchTerm());
-        System.out.println("-----------------Instance State saved "+getSearchTerm());
+        Log.d(tag,"Instance State saved "+getSearchTerm());
     }
 
     /**
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-        System.out.println("------------------Stoppppp");
+        Log.d (tag,"------------------Stoppppp");
     }
 
     /**
@@ -156,34 +155,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        System.out.println("------------------Pause");
+        Log.d (tag,"------------------Pause");
     }
 
     /**
      * Called when activity is resumed
      * e.g. when back button of device was pressed
-     *
-     * toDo: Find a way to restore saved instance state from within this callback method
      */
 
     @Override
     public void onResume()
     {
         super.onResume();
-        System.out.println("-----Main: Restart");
+        Log.d (tag,"-----Main: Restart");
 
         // Create custom list adapter
-
         ArrayList<GameListEntry> gameEntry = new ArrayList<>();                 // File list
         final GameListAdapter gameList = new GameListAdapter(this, gameEntry);  // Custom list adapter
         final ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(gameList);
 
+        // todo: Test, shows the files dir
+        String [] dir=FileSystemUtils.getDir (getFilesDir());
+
         // Progress info
         final TextView progressInfo=(TextView)findViewById(R.id.progressInfo);
 
         // Show game list
-
         updateHighscoreList(gameList,progressInfo);
 
         // Info button
@@ -197,23 +195,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Search
-
         final EditText searchText=(EditText)findViewById(R.id.search);
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 updateHighscoreList(gameList,progressInfo);
-
             }
         });
 
@@ -255,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     public String getSearchTerm()
     {
         final EditText searchText=(EditText)findViewById(R.id.search);
-        System.out.println("----------+++++++++++"+searchText.getText().toString());
+        Log.d (tag,"----------+++++++++++"+searchText.getText().toString());
         return searchText.getText().toString();
     }
 

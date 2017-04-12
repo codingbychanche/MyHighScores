@@ -71,6 +71,7 @@
     <TextView
         android:id="@+id/tvComment"
         android:textSize="10dp"
+        android:hint="Kein kommentar eingegeben"
         android:paddingLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,6 +83,7 @@
         android:id="@+id/tvEvaluation"
         android:textSize="10dp"
         android:paddingLeft="10dp"
+        android:hint="Keine Bewertung des Spieleergebnisses eingtragen"
         android:paddingBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

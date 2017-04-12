@@ -34,7 +34,6 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
     public GameListAdapter(Context context, ArrayList <GameListEntry> GameListEntry) {
         super (context,0,GameListEntry);
-        System.out.println("-------Adapter: Item build");
     }
 
     // Custom view
@@ -46,7 +45,6 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
             // Check if the view already exists, if not, inflate it
             // Game has scores? Yes, inflate the complete view, if not, just the title
-
             if (item.entryType == GameListEntry.SEARCH_RESULT_NOT_FOUND)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry_not_found, parent, false);
 
@@ -61,6 +59,7 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
             // If entry has scores
             if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE ) {
+
                 // Put data into view
                 final TextView tvName = (TextView) convertView.findViewById(R.id.tvGameName);
                 final TextView tvHighScore = (TextView) convertView.findViewById(R.id.tvHighScore);
@@ -100,7 +99,7 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
         // Event handler
         // This method is called, when the list item was clicked
-        if (item.entryType!=item.LAST_ROW) { // Info items may not be set on the click listener!
+        if (item.entryType!=item.LAST_ROW && item.entryType!=item.SEARCH_RESULT_NOT_FOUND) { // Info items may not be set on the click listener!
 
             convertView.setTag(position);
             convertView.setOnClickListener(new View.OnClickListener() {

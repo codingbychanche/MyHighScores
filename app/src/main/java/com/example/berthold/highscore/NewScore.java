@@ -34,13 +34,12 @@ import java.io.IOException;
 
 public class NewScore extends AppCompatActivity {
 
+    String tag;              // Debug info => for "log.."
     int IMAGE_CAPTURE=1;     // Req- code for camera usage
-
-    Uri imageS;              // Uri for screenshoot
-    String pic;              // Screenshoot path
     int key1;                // Link to game this score belongs to
     int pictureKey;          // Link to score entry a picture belongs to
-    String name;
+    Uri imageS;              // Uri for screenshoot in media gallery
+    String name;             // Full path to which the screenshoot file will be saved
 
     /**
      * Add a new score
@@ -59,6 +58,8 @@ public class NewScore extends AppCompatActivity {
         key1=extra.getInt("key1");
         name=extra.getString("name");
 
+        tag="Debug: New Score";
+
         // Input fields
 
         final EditText scoreFieldO;
@@ -72,7 +73,6 @@ public class NewScore extends AppCompatActivity {
 
         // Fab's
         // Save score
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,26 +91,22 @@ public class NewScore extends AppCompatActivity {
                     String path = (f.getAbsolutePath() + "/"+name);
 
                     DB.insert("update scores set picture='"+path+"' where key1="+pictureKey,MainActivity.conn);
-                    System.out.println("+++++++++++++ Picture written to database:"+pic+"for key1"+pictureKey);
-
                     finish();
 
                 } else {
                     saveNegative();
                     finish();
-
                 }
             }
         });
 
         // Take screenshoot ?
-
         ImageButton photo=(ImageButton)findViewById(R.id.kamera);
         photo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View view){
-            // Get score from input
 
+                // Get contents of all input fields
                 String s=scoreFieldO.getText().toString();
                 int score=getScore(s);
                 String c=gameCommentFieldO.getText().toString();
@@ -172,22 +168,9 @@ public class NewScore extends AppCompatActivity {
     {
         // Get key1- value of game selected
         // Each entry in 'scores' will be: key2=key1
-
-        //todo test
-        //DB.insert("insert into scores (key2,score,date,comment,evaluation) values " +
-        // "("+key1+"," + score +",CURRENT_TIMESTAMP,'"+comment+"','"+evaluation+"')", MainActivity.conn);
-
         DB.insert("insert into scores (key2,score,date,comment,evaluation) values " +
                 "(" + key1 + "," + score + ",CURRENT_TIMESTAMP,'" + comment + "','" + evaluation + "')", MainActivity.conn);
         savePositive();
-
-
-        //todo: Obsolete, I hope so......
-        //return DB.getKey1("scores","score",String.valueOf(score),MainActivity.conn);
-        //StringBuffer r=DB.sqlRequest("select score from scores where magic=999",MainActivity.conn);
-        //String rs = r.toString().replace("#", "").trim();
-        //System.out.println("mydebug Save Score, key1 retrieved:"+rs);
-        //return 0;
     }
 
     /**
@@ -233,8 +216,9 @@ public class NewScore extends AppCompatActivity {
 
     /**
      * This is the method called, after the picture was taken
-     * and camera has finished. It writes the uri of the taken
-     * picture into the db's 'pic' field
+     * and camera has finished. It gets the path of the taken
+     * image from 'imageS', gets the bitmap from there, compresses
+     * it and writes it to the app's home dir
      *
      * @global  pictureKey  This key is the key for the score entry matching the picture
      *                      just taken.
@@ -247,18 +231,21 @@ public class NewScore extends AppCompatActivity {
         super.onActivityResult(requestCode,resultCode,data);
 
         // Take picture with camera
-
         if(requestCode==IMAGE_CAPTURE){
             if(resultCode==RESULT_OK) {
                 try
                 {
-                    File f = getFilesDir();
-                    String path = (f.getAbsolutePath() + "/"+name);
-
                     // Get image just taken and save it compressed
                     // This only reduces the quality and the memory footprint, but not
                     // the size of the picture taken!
-                    // todo: find a way to reduce the size of the image also. Could speed up thing's a bit
+                    // todo: Find a way to reduce the size of the image also. Could speed up thing's a bit
+                    File f = getFilesDir();
+
+                    // Picture file will have the same name, as the game for which
+                    // it was created. This file will be overwritten for each new
+                    // screenshoot taken.
+                    // todo: Allow to save a screenshoot for every score saved
+                    String path = (f.getAbsolutePath() + "/"+name);
                     FileOutputStream fos=new FileOutputStream(path);
                     Bitmap b = MediaStore.Images.Media.getBitmap(getContentResolver(), imageS);
                     b.compress(Bitmap.CompressFormat.JPEG,15,fos);
@@ -272,12 +259,8 @@ public class NewScore extends AppCompatActivity {
                     b = BitmapFactory.decodeFile(path, metaData);
                     photo.setImageBitmap(b);
 
-                    // Uri to string and store it
-                    pic=imageS.toString();
-
                 } catch (IOException e) {
-                    Log.d("-----","Could not save image");
-                    //finish();
+                    Log.d(tag,"Could not save image");
                 }
             }
         }

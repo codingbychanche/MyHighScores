@@ -38,6 +38,7 @@
     <string name="no">nicht löschen</string>
     <string name="showingSelection">Gefilterte Ansicht! Sie sehen Spielenamen passend zu:</string>
     <string name="showingAll">Alle Spiele.</string>
+    <string name="nothingToShow">Keine Einträge</string>
 
     <!-- About -->
 

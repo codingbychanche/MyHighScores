@@ -50,12 +50,10 @@ public class GameListFillerv2 implements Runnable{
     public TextView progressInfo;
 
     GameListFillerv2(GameListAdapter gameList, Context c,String search,TextView p) {
-
         this.search=search;
         this.c=c;
         this.gameList=gameList;
         this.progressInfo=p;
-
     }
 
     /**
@@ -79,7 +77,6 @@ public class GameListFillerv2 implements Runnable{
                 @Override
                 public void run() {
                     gameList.clear();
-
                 }
             });
 
@@ -98,13 +95,11 @@ public class GameListFillerv2 implements Runnable{
             if (search.equals("")){
                 search = "%";
             } else{
-
                 // Post "clear the list" to UI- Thread
                 h.post(new Runnable() {
                     @Override
                     public void run() {
                         gameList.clear();
-
                     }
                 });
             }
@@ -146,7 +141,6 @@ public class GameListFillerv2 implements Runnable{
                             if (!isEntry(gameList,key1)) { // Entry exists?
 
                                 // Get Highest score for this game
-
                                 resultFromScores = DB.sqlRequest("select max(score) from scores where key2=" + key1, MainActivity.conn);
 
                                 try {
@@ -157,7 +151,6 @@ public class GameListFillerv2 implements Runnable{
                                 }
 
                                 // Get comment
-
                                 resultFromScores = DB.sqlRequest("select comment from scores where score=(select max(score) from scores where key2=" + key1 + ")", MainActivity.conn);
                                 comment = resultFromScores.toString().replace("#", "").trim();
 
@@ -166,7 +159,6 @@ public class GameListFillerv2 implements Runnable{
                                 evaluation = resultFromScores.toString().replace("#", "").trim();
 
                                 // Get date
-
                                 resultFromScores = DB.sqlRequest("select date from scores where score=(select max(score) from scores where key2=" + key1 + ")", MainActivity.conn);
                                 date = resultFromScores.toString().replace("#", "").trim();
 
