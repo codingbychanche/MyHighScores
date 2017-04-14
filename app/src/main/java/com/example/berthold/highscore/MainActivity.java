@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Get saved instance state
         if (savedInstanceState != null) {
            searchTerm=savedInstanceState.getString("searchTerm");
-            System.out.println("------Instance State loaded");
+            Log.d(tag,"------Instance State loaded");
         } else {
             searchTerm="";
         }
@@ -208,6 +208,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 updateHighscoreList(gameList,progressInfo);
+                try {
+                    // todo: Do I really need this? Seems to solve the 'search' problem
+                    // Not every time a search term is entered, the list view is
+                    // updated accordingly. The 'wait' seems to solve this.....
+                    Thread.sleep(80);
+                } catch (InterruptedException in) {}
             }
         });
 

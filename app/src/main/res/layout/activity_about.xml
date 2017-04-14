@@ -14,7 +14,8 @@
         android:id="@+id/name"
         android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="51dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10sp"
         android:text="@string/info"/>
 
     <TextView
@@ -41,11 +42,42 @@
     </View>
 
     <TextView
+        android:id="@+id/thirdPartyText"
+        android:layout_below="@id/ccBY"
+        android:paddingBottom="10sp"
+        android:text="H2 Database Engine:"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/thirdParty"
+        android:layout_below="@id/thirdPartyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This software contains unmodified binary redistributions for
+H2 database engine (http://www.h2database.com/),
+which is dual licensed and available under the MPL 2.0
+(Mozilla Public License) or under the EPL 1.0 (Eclipse Public License).
+An original copy of the license agreement can be found at:
+http://www.h2database.com/html/license.html"/>
+
+    <View
+        android:id="@+id/secondSep"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/thirdParty"
+        android:paddingBottom="10dp"
+        android:background="@color/colorSepparator">
+    </View>
+
+    <TextView
         android:id="@+id/infoText"
-        android:layout_below="@+id/ccBY"
+        android:layout_below="@+id/secondSep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:paddingBottom="10sp"
         android:text="@string/databaseInfo"/>
     <TextView
         android:id="@+id/dataBaseInfo"

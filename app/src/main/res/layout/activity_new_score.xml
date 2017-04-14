@@ -38,7 +38,7 @@
 
         <ImageButton
             android:id="@+id/kamera"
-            android:layout_width="100pt"
+            android:layout_width="200pt"
             android:layout_height="100pt"
             android:src="@android:drawable/ic_menu_camera"
             android:layout_below="@+id/score"/>

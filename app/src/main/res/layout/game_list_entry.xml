@@ -9,30 +9,36 @@
 
     <ImageView
         android:id="@+id/gameScreenShoot"
-        android:paddingTop="10dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:paddingLeft="25dp"
+        android:paddingTop="10px"
+        android:paddingBottom="5px"
+        android:paddingLeft="5px"
+        android:layout_width="400px"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/calendar"
+        android:src="@android:drawable/ic_menu_my_calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tvDate"
-        android:textSize="12sp"
+        android:textSize="25px"
+        android:textColor="@color/shellText"
         android:textStyle="bold"
-        android:paddingLeft="25dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="5px"
+        android:paddingTop="10px"
+        android:layout_toRightOf="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/date_played"
-        android:layout_below="@+id/gameScreenShoot"
-        android:layout_alignParentLeft="true" />
+        android:hint="@string/date_played" />
 
     <TextView
         android:id="@+id/tvGameName"
-        android:textSize="18dp"
+        android:textSize="25px"
         android:textStyle="bold"
-        android:paddingLeft="10dp"
+        android:paddingLeft="10px"
+        android:paddingTop="10px"
         android:layout_toRightOf="@id/gameScreenShoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -52,43 +58,42 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="14sp"
-            android:paddingRight="1dp"
+            android:textSize="20px"
+            android:paddingRight="1px"
             android:layout_toLeftOf="@id/arrow"/>
-
-
 
     <TextView
         android:id="@+id/tvHighScore"
-        android:textSize="15dp"
-        android:paddingLeft="10dp"
+        android:textSize="35px"
+        android:paddingLeft="10px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/your_highscore"
         android:layout_below="@+id/tvGameName"
         android:layout_toRightOf="@+id/gameScreenShoot"/>
 
     <TextView
         android:id="@+id/tvComment"
-        android:textSize="10dp"
-        android:hint="Kein kommentar eingegeben"
-        android:paddingLeft="10dp"
-        android:layout_width="wrap_content"
+        android:textSize="25px"
+        android:textStyle="bold"
+        android:textColor="@color/shellText"
+        android:paddingLeft="10px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvHighScore"
-        android:layout_toRightOf="@+id/gameScreenShoot"
-        android:layout_alignParentRight="true" />
+        android:paddingBottom="10px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/tvEvaluation"
-        android:textSize="10dp"
-        android:paddingLeft="10dp"
-        android:hint="Keine Bewertung des Spieleergebnisses eingtragen"
-        android:paddingBottom="10dp"
-        android:layout_width="wrap_content"
+        android:textSize="25px"
+        android:textStyle="bold"
+        android:textColor="@color/shellText"
+        android:paddingLeft="10px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvComment"
-        android:layout_toRightOf="@+id/gameScreenShoot"
-        android:layout_alignParentRight="true" />
+        android:paddingBottom="40px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
+
 
 </RelativeLayout>

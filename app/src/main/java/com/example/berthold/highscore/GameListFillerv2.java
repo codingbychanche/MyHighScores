@@ -138,7 +138,7 @@ public class GameListFillerv2 implements Runnable{
                             // Check if this entry already exists in 'gameList'
                             // if so, don't add it again....
 
-                            if (!isEntry(gameList,key1)) { // Entry exists?
+                            //if (!isEntry(gameList,key1)) { // Entry exists?
 
                                 // Get Highest score for this game
                                 resultFromScores = DB.sqlRequest("select max(score) from scores where key2=" + key1, MainActivity.conn);
@@ -204,7 +204,7 @@ public class GameListFillerv2 implements Runnable{
                                 // Add all data to list view
                                 GameListEntry e = new GameListEntry(entryType,numberOfScores, 0, r[1], maxScore, key1, 0, comment, evaluation, formatedDate, bitmapOfScreenshoot);
                                 gameList.add(e);
-                            } // Entry exists?
+                            //} // Entry exists?
                         }
                     });// Post
 
