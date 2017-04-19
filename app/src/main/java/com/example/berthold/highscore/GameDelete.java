@@ -154,8 +154,8 @@ public class GameDelete extends AppCompatActivity {
 
                 // Restart activity (and show updated list of games to allow another one
                 // to be deleted or to go back to main
-                searchTerm="";
                 Intent i=new Intent(GameDelete.this,GameDelete.class);
+                i.putExtra("sql",searchTerm);
                 startActivity(i);
                 finish();
 

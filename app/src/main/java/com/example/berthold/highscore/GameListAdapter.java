@@ -24,11 +24,13 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
     StringBuffer result; // Result of Db request
+    DecimalFormat df=new DecimalFormat("#,###,###");
 
     // Constructor
 
@@ -39,9 +41,9 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
     // Custom view
 
     @Override
-    public View getView (int position, View convertView, ViewGroup parent)  {
+    public  View getView (int position, View convertView, ViewGroup parent)  {
 
-        final GameListEntry item=getItem(position);
+            final GameListEntry item = getItem(position);
 
             // Check if the view already exists, if not, inflate it
             // Game has scores? Yes, inflate the complete view, if not, just the title
@@ -51,14 +53,14 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
             if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry, parent, false);
 
-            if (item.entryType==GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET)
+            if (item.entryType == GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry_no_score, parent, false);
 
-            if (item.entryType== GameListEntry.LAST_ROW)
+            if (item.entryType == GameListEntry.LAST_ROW)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry_last_row, parent, false);
 
             // If entry has scores
-            if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE ) {
+            if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE) {
 
                 // Put data into view
                 final TextView tvName = (TextView) convertView.findViewById(R.id.tvGameName);
@@ -73,9 +75,11 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
                 ImageView ivScreenShoot = (ImageView) convertView.findViewById(R.id.gameScreenShoot);
 
-                tvName.setText(item.gameName);                              // Put name of the game into listView
+                tvName.setText(item.gameName);                                  // Put name of the game into listView
 
-                tvHighScore.setText(String.valueOf(item.highScore));        // Put Highest score for this game into list view
+                //tvHighScore.setText(df.format(String.valueOf(item.highScore))); // Put Highest score for this game into list view
+                tvHighScore.setText(df.format(item.highScore)); // Put Highest score for this game into list view
+
 
                 tvComment.setText(item.comment);
                 tvEvaluation.setText(item.evaluation);
@@ -93,36 +97,36 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
                 // Entry has no scores:
                 final TextView tvName = (TextView) convertView.findViewById(R.id.tvGameName);
                 tvName.setText(item.gameName);
-                final ImageView i =(ImageView) convertView.findViewById(R.id.gameScreenShoot);
+                final ImageView i = (ImageView) convertView.findViewById(R.id.gameScreenShoot);
                 i.setImageBitmap(item.screenShoot);
             }
 
-        // Event handler
-        // This method is called, when the list item was clicked
-        if (item.entryType!=item.LAST_ROW && item.entryType!=item.SEARCH_RESULT_NOT_FOUND) { // Info items may not be set on the click listener!
+            // Event handler
+            // This method is called, when the list item was clicked
+            if (item.entryType != item.LAST_ROW && item.entryType != item.SEARCH_RESULT_NOT_FOUND) { // Info items may not be set on the click listener!
 
-            convertView.setTag(position);
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                convertView.setTag(position);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    // Get item pos
-                    int pos = (Integer) v.getTag();
-                    String nameOfSelectedGame = item.gameName;
-                    int key1 = item.key1;
+                        // Get item pos
+                        int pos = (Integer) v.getTag();
+                        String nameOfSelectedGame = item.gameName;
+                        int key1 = item.key1;
 
-                    // Get object at pos i from GameListEntry
-                    GameListEntry i = getItem(pos);
+                        // Get object at pos i from GameListEntry
+                        GameListEntry i = getItem(pos);
 
-                    // Show all scores for the selected game
-                    Intent in = new Intent(v.getContext(), ScoreListPerGame.class);
-                    in.putExtra("key1", key1);
-                    in.putExtra("name", nameOfSelectedGame);
-                    System.out.println("------------key1 passed" + key1);
-                    v.getContext().startActivity(in);
-                }
-            });
-        }
-        return convertView;
+                        // Show all scores for the selected game
+                        Intent in = new Intent(v.getContext(), ScoreListPerGame.class);
+                        in.putExtra("key1", key1);
+                        in.putExtra("name", nameOfSelectedGame);
+                        System.out.println("------------key1 passed" + key1);
+                        v.getContext().startActivity(in);
+                    }
+                });
+            }
+            return convertView;
     }
 }

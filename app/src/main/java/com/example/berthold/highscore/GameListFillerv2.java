@@ -71,7 +71,7 @@ public class GameListFillerv2 implements Runnable{
 
         if (threadsRunning ==0) {   // Check if already running
 
-            threadsRunning++;
+            threadsRunning=1;
 
             h.post(new Runnable() {
                 @Override
@@ -89,8 +89,7 @@ public class GameListFillerv2 implements Runnable{
             // If no search item was passed, do not clear the list and add only
             // new items. This should speed things up, but! For the time being,
             // 'gameList' is empty if a new activity was started thus this makes no
-            // difference for the time being:
-            // todo: save/ load 'gameList' in instance state
+            // difference for the time being.
 
             if (search.equals("")){
                 search = "%";
@@ -227,6 +226,8 @@ public class GameListFillerv2 implements Runnable{
                         gameList.clear();
                         GameListEntry e = new GameListEntry(GameListEntry.SEARCH_RESULT_NOT_FOUND, 0, 0, "", maxScore, key1, 0, comment, evaluation, "", null);
                         gameList.add(e);
+                        threadsRunning=0;
+                        return;
                     }
                 });
             }
@@ -235,7 +236,7 @@ public class GameListFillerv2 implements Runnable{
             // Add last row to list to give some room at it's end in order to improve
             // visibility of it's rows
 
-            threadsRunning--;   // One thread less
+            threadsRunning=0;   // One thread less
 
             h.post(new Runnable (){
                 @Override
@@ -250,8 +251,9 @@ public class GameListFillerv2 implements Runnable{
 
                 }
             });
+            return;
 
-        }
+       }
     }
 
     /**

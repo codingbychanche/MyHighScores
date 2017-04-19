@@ -23,11 +23,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 public class ScoreListPerGame extends AppCompatActivity {
 
     private ListView myListView;
     private ArrayAdapter myListAdapter;
     private int key1;
+    DecimalFormat df=new DecimalFormat("#,###,###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +83,14 @@ public class ScoreListPerGame extends AppCompatActivity {
             fab.clearAnimation();
             for (int i = 0; i < rs.length; i++) {
                 String[] r = rs[i].toString().split(",");       // Separate fields r[0]=score// r[1]= date
+
                 // r[0]=Score
                 // r[1]=date
-
+                // r[2]=comment
+                // r[3]=evaluation
                 String date = FormatTimeStamp.german(r[1], FormatTimeStamp.WITH_TIME);
-                niceResult.append(r[0] + "\n" + date + ",");
+                niceResult.append(df.format(Integer.decode(r[0])) + "\n" + date + ",");
+
             }
 
             // Show List

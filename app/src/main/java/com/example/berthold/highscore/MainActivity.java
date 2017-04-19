@@ -203,17 +203,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 updateHighscoreList(gameList,progressInfo);
-                try {
-                    // todo: Do I really need this? Seems to solve the 'search' problem
-                    // Not every time a search term is entered, the list view is
-                    // updated accordingly. The 'wait' seems to solve this.....
-                    Thread.sleep(80);
-                } catch (InterruptedException in) {}
             }
         });
 
@@ -241,7 +236,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateHighscoreList(GameListAdapter g,TextView p)
     {
+
         GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), getSearchTerm(),p);
+
+        //todo Don't like this, but takes care that only one thread motifies the game list....
+        p.setText("Waiting...........");
+        while (f.threadsRunning==1);
+        p.setText("");
         filler=new Thread(f);
         filler.start();
     }
