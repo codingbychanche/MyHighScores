@@ -9,7 +9,7 @@ import android.util.DisplayMetrics;
  *
  * A collection of methods to process bitmap gfx
  *
- * Created by Berthold on 12/21/16.
+ * @author Berthold Fritz 2016
  */
 
 public class ChangeBitmap {

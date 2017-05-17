@@ -1,10 +1,10 @@
+package com.example.berthold.highscore;
+
 /**
  * Deletes the selected game and all of it's scores
  *
  * @author Berthold Fritz 2016
  */
-
-package com.example.berthold.highscore;
 
 import android.content.DialogInterface;
 import android.content.Intent;

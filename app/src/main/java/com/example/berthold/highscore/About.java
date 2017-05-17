@@ -1,5 +1,12 @@
 package com.example.berthold.highscore;
 
+/**
+ * About
+ *
+ *
+ *
+ */
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -1,14 +1,14 @@
+package com.example.berthold.highscore;
+
 /**
  * DB Class
  * 
  * This class handled all SQL- requests CreateDB
  * 
- * @author Berthold
+ * @author Berthold Fritz 2016
  * @param args -
  *
  */
-
-package com.example.berthold.highscore;
 
 import android.util.Log;
 

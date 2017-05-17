@@ -1,10 +1,11 @@
+package com.example.berthold.highscore;
+
 /**
  * Add a new game
  *
  * @author  Berthold Fritz 2016
  *
  */
-package com.example.berthold.highscore;
 
 import android.content.Intent;
 import android.os.Bundle;

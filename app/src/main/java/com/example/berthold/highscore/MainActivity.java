@@ -1,3 +1,5 @@
+package com.example.berthold.highscore;
+
 /**
  * Highscore
  *
@@ -6,8 +8,6 @@
  * @author  Berthold Fritz 2017
  *
  */
-
-package com.example.berthold.highscore;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,10 +32,15 @@ public class MainActivity extends AppCompatActivity {
     private static String tag;
 
     // Database
-
     public static Connection conn;
     public static String path;
-    String searchTerm;          // Contents of search field, used to update list depending on it.
+
+    // Sorting
+    private static String sortingOrder;
+    private static final String sortAscending="ASC";
+    private static final String sortDescending="DESC";
+
+    // Threads
     static Thread filler;
 
     /**
@@ -48,16 +53,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get saved instance state
-        if (savedInstanceState != null) {
-           searchTerm=savedInstanceState.getString("searchTerm");
-            Log.d(tag,"------Instance State loaded");
-        } else {
-            searchTerm="";
-        }
-
         // Layout
         setContentView(R.layout.activity_main);
+
+        // Sorting order
+        sortingOrder=sortAscending;
+
+        // Get saved instance state
+        if (savedInstanceState != null) {
+            final EditText searchText=(EditText)findViewById(R.id.search);
+            searchText.setText(savedInstanceState.getString("searchTerm"));
+            Log.d(tag,"------Instance State loaded "+savedInstanceState.getString("searchTerm"));
+        }
 
         // Debug
         tag="Debug: Main";
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             CreateDB.make(path);
-            Toast.makeText(getApplicationContext(), "MainActivity: Creating DB", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.dbloaded, Toast.LENGTH_LONG).show();
             Log.i("-----", "DB Created on:\n");
             Log.i("=", path);
         } catch (Exception e) {
@@ -182,7 +189,24 @@ public class MainActivity extends AppCompatActivity {
         final TextView progressInfo=(TextView)findViewById(R.id.progressInfo);
 
         // Show game list
-        updateHighscoreList(gameList,progressInfo);
+        updateHighscoreList(gameList,progressInfo,sortingOrder);
+
+        // Sort button
+        final ImageButton sort=(ImageButton)findViewById(R.id.sort_button);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo should also saved in instance state
+                    if(sortingOrder.equals(sortAscending)) {
+                        sortingOrder=sortDescending;
+                        sort.setImageResource(R.drawable.sort_descending);
+                    } else {
+                        sortingOrder=sortAscending;
+                        sort.setImageResource(R.drawable.sort_ascending);
+                    }
+                    updateHighscoreList(gameList,progressInfo,sortingOrder);
+                    }
+                });
 
         // Info button
         final ImageButton info=(ImageButton)findViewById(R.id.info_button);
@@ -196,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Search
         final EditText searchText=(EditText)findViewById(R.id.search);
+
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -208,12 +233,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                updateHighscoreList(gameList,progressInfo);
+
+                updateHighscoreList(gameList,progressInfo,sortingOrder);
             }
         });
-
-        // Init search field
-        updateHighscoreList(gameList,progressInfo);
 
         // Reset search button
         ImageButton resetSearch=(ImageButton)findViewById(R.id.reset_search_button);
@@ -222,9 +245,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText searchText=(EditText)findViewById(R.id.search);
-                //searchText.setText("");
                 searchText.getText().clear();
-                updateHighscoreList(gameList,progressInfo);
+                updateHighscoreList(gameList,progressInfo,sortingOrder);
             }
         });
     }
@@ -234,16 +256,15 @@ public class MainActivity extends AppCompatActivity {
      *
      */
 
-    public void updateHighscoreList(GameListAdapter g,TextView p)
+    public void updateHighscoreList(GameListAdapter g,TextView p,String sortingOrder)
     {
 
-        GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), getSearchTerm(),p);
+        GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), getSearchTerm(),sortingOrder,p);
 
-        //todo Don't like this, but takes care that only one thread motifies the game list....
-        p.setText("Waiting...........");
-        while (f.threadsRunning==1);
-        p.setText("");
-        filler=new Thread(f);
+        //todo Don't like this, but takes care that only one thread notifies the game list....
+        while (f.threadsRunning == 1);
+
+        filler = new Thread(f);
         filler.start();
     }
 
@@ -258,19 +279,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText searchText=(EditText)findViewById(R.id.search);
         Log.d (tag,"----------+++++++++++"+searchText.getText().toString());
         return searchText.getText().toString();
-    }
-
-    /**
-     * Set contents of search- text field
-     *
-     * @param search    Search term
-     *
-     */
-
-    public void setSearchTerm(String search)
-    {
-        final EditText searchText=(EditText)findViewById(R.id.search);
-        searchText.setText(search);
     }
 }
 

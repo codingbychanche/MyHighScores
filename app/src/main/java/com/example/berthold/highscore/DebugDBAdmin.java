@@ -3,7 +3,7 @@
  *
  * Provides an simple interface to test sql querys on the db
  *
- * Berthold Fritz 3/2017
+ * @author Berthold Fritz 3/2017
  *
  */
 package com.example.berthold.highscore;

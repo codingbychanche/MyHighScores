@@ -1,3 +1,5 @@
+package com.example.berthold.highscore;
+
 /**
  * Lists the scores of the selected game
  *
@@ -5,8 +7,6 @@
  *
  * @author Berthold Fritz 2016
  */
-
-package com.example.berthold.highscore;
 
 import android.app.Activity;
 import android.content.Intent;

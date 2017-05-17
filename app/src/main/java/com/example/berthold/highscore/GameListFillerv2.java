@@ -8,14 +8,17 @@ package com.example.berthold.highscore;
  * This file replaces "gameListFiller" which was hard to control in means of starting threat's.
  * (Check the To Do's in the file mentioned)
  *
- * Created by Berthold on 2/9/17.
+ * @author  Berhold Fritz 2016
  */
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -38,6 +41,7 @@ public class GameListFillerv2 implements Runnable{
     public static int entryType;
     public static Handler h=new Handler();
     public static int threadsRunning;
+    private static SpannableString gameName;
     public int i;
 
     /**
@@ -45,15 +49,17 @@ public class GameListFillerv2 implements Runnable{
      */
 
     public String search;
+    public String sortingOrder;
     public Context c;
     public GameListAdapter gameList;
     public TextView progressInfo;
 
-    GameListFillerv2(GameListAdapter gameList, Context c,String search,TextView p) {
+    GameListFillerv2(GameListAdapter gameList, Context c,String search,String sortingOrder,TextView p) {
         this.search=search;
         this.c=c;
         this.gameList=gameList;
         this.progressInfo=p;
+        this.sortingOrder=sortingOrder;
     }
 
     /**
@@ -67,7 +73,7 @@ public class GameListFillerv2 implements Runnable{
     public void run() {
 
         // Thread control
-        // Check if ths thread is aready running. If so, don't do it again!
+        // Check if this thread is already running. If so, don't do it again!
 
         if (threadsRunning ==0) {   // Check if already running
 
@@ -80,7 +86,6 @@ public class GameListFillerv2 implements Runnable{
                 }
             });
 
-            System.out.println("--------------------------- länge"+gameList.getCount());
 
             // Check if a search item was passed:
             // If so, clear the list and fill it with the search result or,
@@ -103,13 +108,15 @@ public class GameListFillerv2 implements Runnable{
                 });
             }
 
-            final StringBuffer resultFromGames = DB.sqlRequest("select key1,name,picture from games where name like '%" + search + "%' order by name DESC", MainActivity.conn);
+            final StringBuffer resultFromGames = DB.sqlRequest("select key1,name,picture from games where name like '%" + search + "%' order by name "+sortingOrder, MainActivity.conn);
             final String[] rsGames = resultFromGames.toString().split("#");
 
             if (!rsGames[0].equals("empty")) // Search result found?
             {
 
                 // Fill highscore list
+
+                System.out.println("Sorting "+sortingOrder);
                 for (int n = 0; n <= rsGames.length - 1; n++) {
                     h.post(new Runnable() {
 
@@ -138,6 +145,15 @@ public class GameListFillerv2 implements Runnable{
                             // if so, don't add it again....
 
                             //if (!isEntry(gameList,key1)) { // Entry exists?
+
+                                // Get name
+                                gameName = new SpannableString(r[1]);
+
+                                if (!search.equals("%")) {
+                                    int startIndex = r[1].indexOf(search);
+                                    int endIndex = r[1].lastIndexOf(search);
+                                    gameName.setSpan(new BackgroundColorSpan(Color.YELLOW), startIndex, startIndex+search.length(), 0);
+                                }
 
                                 // Get Highest score for this game
                                 resultFromScores = DB.sqlRequest("select max(score) from scores where key2=" + key1, MainActivity.conn);
@@ -201,7 +217,7 @@ public class GameListFillerv2 implements Runnable{
                                 // Get and format date
                                 String formatedDate = FormatTimeStamp.german(date, FormatTimeStamp.WITH_TIME);
                                 // Add all data to list view
-                                GameListEntry e = new GameListEntry(entryType,numberOfScores, 0, r[1], maxScore, key1, 0, comment, evaluation, formatedDate, bitmapOfScreenshoot);
+                                GameListEntry e = new GameListEntry(entryType,numberOfScores, 0, gameName, maxScore, key1, 0, comment, evaluation, formatedDate, bitmapOfScreenshoot);
                                 gameList.add(e);
                             //} // Entry exists?
                         }
@@ -212,8 +228,12 @@ public class GameListFillerv2 implements Runnable{
                     // and to react thus preventing the main UI- thread from freezing....
 
                     try {
-                        Thread.sleep(55);
-                    } catch (InterruptedException in) {}
+                        Thread.sleep(5);
+                    } catch (InterruptedException in) {
+                        Log.d ("#######################","Interuppted");
+                        threadsRunning=0;
+                        return;
+                    }
 
                 } // for
 
@@ -224,7 +244,7 @@ public class GameListFillerv2 implements Runnable{
                     @Override
                     public void run() {
                         gameList.clear();
-                        GameListEntry e = new GameListEntry(GameListEntry.SEARCH_RESULT_NOT_FOUND, 0, 0, "", maxScore, key1, 0, comment, evaluation, "", null);
+                        GameListEntry e = new GameListEntry(GameListEntry.SEARCH_RESULT_NOT_FOUND, 0, 0, null, maxScore, key1, 0, comment, evaluation, "", null);
                         gameList.add(e);
                         threadsRunning=0;
                         return;
@@ -241,7 +261,7 @@ public class GameListFillerv2 implements Runnable{
             h.post(new Runnable (){
                 @Override
                 public void run() {
-                    GameListEntry e = new GameListEntry(GameListEntry.LAST_ROW, 0, 0, "", maxScore, key1, 0, comment, evaluation, "", null);
+                    GameListEntry e = new GameListEntry(GameListEntry.LAST_ROW, 0, 0, null, maxScore, key1, 0, comment, evaluation, "", null);
                     gameList.add(e);
                     progressInfo.setText("");
 
@@ -252,8 +272,9 @@ public class GameListFillerv2 implements Runnable{
                 }
             });
             return;
-
-       }
+        }
+        System.out.println("Already running!");
+        return;
     }
 
     /**

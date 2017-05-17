@@ -1,3 +1,5 @@
+package com.example.berthold.highscore;
+
 /**
  * Create.
  * 
@@ -7,8 +9,6 @@
  * @author Berthold Fritz 2016
  *
  */
-
-package com.example.berthold.highscore;
 
 import android.util.Log;
 

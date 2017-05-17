@@ -1,12 +1,13 @@
+package com.example.berthold.highscore;
+
 /**
  * Data model for each row in our game list
  *
  *  @author  Berthold Fritz 2016
  */
 
-package com.example.berthold.highscore;
-
 import android.graphics.Bitmap;
+import android.text.SpannableString;
 
 public class GameListEntry {
 
@@ -24,7 +25,7 @@ public class GameListEntry {
 
     public int numberOfScores;      // Number of scores for this game
     public int gameType;            // Type of the game (Arcade, console,pc)
-    public String gameName;         // Name of the game
+    public SpannableString gameName;         // Name of the game
 
     public int highScore;           // Best score ever for this game
 
@@ -37,8 +38,8 @@ public class GameListEntry {
 
     public Bitmap screenShoot;      // Screenshoot, if taken....
 
-    GameListEntry(int entryType,int numberOfScores, int gameType, String gameName, int highScore,int key1,int key2,
-                  String comment,String evaluation,String date,Bitmap screenShoot) {
+    GameListEntry(int entryType, int numberOfScores, int gameType, SpannableString gameName, int highScore, int key1, int key2,
+                  String comment, String evaluation, String date, Bitmap screenShoot) {
 
         this.entryType=entryType;
         this.numberOfScores=numberOfScores;

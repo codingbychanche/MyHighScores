@@ -1,19 +1,19 @@
+package com.example.berthold.highscore;
+
 /**
  * Adapter class for game- list
  *
- * This code creates each row of our game list, each time a new entry
+ * This code creates each row of our game list, every time a new entry
  * is made.
  *
  *  @author  Berthold Fritz 2016
  */
 
-
-package com.example.berthold.highscore;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +112,9 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
                         // Get item pos
                         int pos = (Integer) v.getTag();
-                        String nameOfSelectedGame = item.gameName;
+                        SpannableString nofg = item.gameName;
+                        String nameOfSelectedGame=nofg.toString();
+
                         int key1 = item.key1;
 
                         // Get object at pos i from GameListEntry

@@ -1,11 +1,11 @@
+package com.example.berthold.highscore;
+
 /**
  * New score
  *
  * @author Berthold Fritz 2016
  *
  */
-
-package com.example.berthold.highscore;
 
 import android.content.ContentValues;
 import android.content.Intent;

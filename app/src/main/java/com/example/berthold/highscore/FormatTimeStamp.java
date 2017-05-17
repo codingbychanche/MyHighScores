@@ -5,7 +5,7 @@ package com.example.berthold.highscore;
  *
  * This class provides methods to format H2- DB's timestamp- String for output
  *
- * Created by Berthold on 12/16/16.
+ * @author Berthold Fritz 2016
  */
 
 public class FormatTimeStamp {
@@ -31,7 +31,7 @@ public class FormatTimeStamp {
 
         String parts []=timestamp.split(" ");
 
-        // Extract year, month ans day
+        // Extract year, month and day
 
         try {
             String dateparts[] = parts[0].split("-");
@@ -49,7 +49,7 @@ public class FormatTimeStamp {
             else formated=day+"."+month+"."+year+"  "+hour+":"+minutes;
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            return formated = "No score, no date :-)";
+            return formated = "Could not convert";
         }
 
         return formated;
