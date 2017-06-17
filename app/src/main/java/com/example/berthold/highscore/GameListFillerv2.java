@@ -22,6 +22,7 @@ import android.text.style.BackgroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.util.Log;
 
@@ -52,9 +53,9 @@ public class GameListFillerv2 implements Runnable{
     public String sortingOrder;
     public Context c;
     public GameListAdapter gameList;
-    public TextView progressInfo;
+    public ProgressBar progressInfo;
 
-    GameListFillerv2(GameListAdapter gameList, Context c,String search,String sortingOrder,TextView p) {
+    GameListFillerv2(GameListAdapter gameList, Context c,String search,String sortingOrder,ProgressBar p) {
         this.search=search;
         this.c=c;
         this.gameList=gameList;
@@ -115,8 +116,8 @@ public class GameListFillerv2 implements Runnable{
             {
 
                 // Fill highscore list
+                progressInfo.setMax(rsGames.length-1);
 
-                System.out.println("Sorting "+sortingOrder);
                 for (int n = 0; n <= rsGames.length - 1; n++) {
                     h.post(new Runnable() {
 
@@ -124,7 +125,7 @@ public class GameListFillerv2 implements Runnable{
                         public void run() {
                             String[] r = rsGames[i].split(",");
                             i++;
-                            progressInfo.setText("Lade:"+i+" von:"+rsGames.length);
+                            progressInfo.setProgress(i);
 
                             // r contains the row of the db- entry in the order of the sql- request
                             // [0]key1,[1]name,[2]picture,[3]comment,[4]evaluation
@@ -228,7 +229,7 @@ public class GameListFillerv2 implements Runnable{
                     // and to react thus preventing the main UI- thread from freezing....
 
                     try {
-                        Thread.sleep(5);
+                        Thread.sleep(50);
                     } catch (InterruptedException in) {
                         Log.d ("#######################","Interuppted");
                         threadsRunning=0;
@@ -263,7 +264,14 @@ public class GameListFillerv2 implements Runnable{
                 public void run() {
                     GameListEntry e = new GameListEntry(GameListEntry.LAST_ROW, 0, 0, null, maxScore, key1, 0, comment, evaluation, "", null);
                     gameList.add(e);
-                    progressInfo.setText("");
+
+                    progressInfo.setProgress(rsGames.length-1);
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException es){}
+
+                    progressInfo.setProgress(0);
 
                     // todo: Cool, this code changes the items screenshoot directly and updates the list...
                     //GameListEntry ee=gameList.getItem(1);

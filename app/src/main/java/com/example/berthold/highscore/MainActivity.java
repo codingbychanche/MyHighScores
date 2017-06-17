@@ -7,19 +7,26 @@ package com.example.berthold.highscore;
  *
  * @author  Berthold Fritz 2017
  *
+ * @version 1.0
+ *
  */
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.sql.Connection;
@@ -43,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     // Threads
     static Thread filler;
 
+    // ToDo Test: Used if search widget is used...
+    GameListAdapter gl;
+    String st="";
+
     /**
      * Create activity
      *
@@ -56,15 +67,18 @@ public class MainActivity extends AppCompatActivity {
         // Layout
         setContentView(R.layout.activity_main);
 
+        // Inflate toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setSubtitle("Spiele:"   +DB.getNumberOfRows("games",conn)+" Punkte:"+
+                                        +DB.getNumberOfRows("scores",conn));
+
         // Sorting order
         sortingOrder=sortAscending;
 
         // Get saved instance state
-        if (savedInstanceState != null) {
-            final EditText searchText=(EditText)findViewById(R.id.search);
-            searchText.setText(savedInstanceState.getString("searchTerm"));
-            Log.d(tag,"------Instance State loaded "+savedInstanceState.getString("searchTerm"));
-        }
+        if (savedInstanceState != null) st=savedInstanceState.getString("searchTerm");
 
         // Debug
         tag="Debug: Main";
@@ -116,10 +130,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(view.getContext(), GameDelete.class);
-                in.putExtra("sql",getSearchTerm());
+                in.putExtra("sql",st);
                 view.getContext().startActivity(in);
             }
         });
+
+
     }
 
     /**
@@ -135,8 +151,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("searchTerm",getSearchTerm());
-        Log.d(tag,"Instance State saved "+getSearchTerm());
+        outState.putString("searchTerm",st);
     }
 
     /**
@@ -176,79 +191,21 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.d (tag,"-----Main: Restart");
 
-        // Create custom list adapter
-        ArrayList<GameListEntry> gameEntry = new ArrayList<>();                 // File list
-        final GameListAdapter gameList = new GameListAdapter(this, gameEntry);  // Custom list adapter
-        final ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(gameList);
-
         // todo: Test, shows the files dir
         String [] dir=FileSystemUtils.getDir (getFilesDir());
 
         // Progress info
-        final TextView progressInfo=(TextView)findViewById(R.id.progressInfo);
+        final ProgressBar progress=(ProgressBar)findViewById(R.id.progress);
+
+        // Create custom list adapter
+        ArrayList<GameListEntry> gameEntry = new ArrayList<>();                 // File list
+        final GameListAdapter gameList = new GameListAdapter(this, gameEntry);  // Custom list adapter
+        gl=gameList;
+        final ListView list = (ListView) findViewById(R.id.list);
+        list.setAdapter(gameList);
 
         // Show game list
-        updateHighscoreList(gameList,progressInfo,sortingOrder);
-
-        // Sort button
-        final ImageButton sort=(ImageButton)findViewById(R.id.sort_button);
-        sort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo should also saved in instance state
-                    if(sortingOrder.equals(sortAscending)) {
-                        sortingOrder=sortDescending;
-                        sort.setImageResource(R.drawable.sort_descending);
-                    } else {
-                        sortingOrder=sortAscending;
-                        sort.setImageResource(R.drawable.sort_ascending);
-                    }
-                    updateHighscoreList(gameList,progressInfo,sortingOrder);
-                    }
-                });
-
-        // Info button
-        final ImageButton info=(ImageButton)findViewById(R.id.info_button);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(MainActivity.this, About.class);
-                startActivity(in);
-            }
-        });
-
-        // Search
-        final EditText searchText=(EditText)findViewById(R.id.search);
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                updateHighscoreList(gameList,progressInfo,sortingOrder);
-            }
-        });
-
-        // Reset search button
-        ImageButton resetSearch=(ImageButton)findViewById(R.id.reset_search_button);
-
-        resetSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText searchText=(EditText)findViewById(R.id.search);
-                searchText.getText().clear();
-                updateHighscoreList(gameList,progressInfo,sortingOrder);
-            }
-        });
+        updateHighscoreList(gameList,progress,sortingOrder);
     }
 
     /**
@@ -256,11 +213,11 @@ public class MainActivity extends AppCompatActivity {
      *
      */
 
-    public void updateHighscoreList(GameListAdapter g,TextView p,String sortingOrder)
+    public void updateHighscoreList(GameListAdapter g,ProgressBar p,String sortingOrder)
     {
 
-        GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), getSearchTerm(),sortingOrder,p);
-
+        //GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), getSearchTerm(),sortingOrder,p);
+        GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), st,sortingOrder,p);
         //todo Don't like this, but takes care that only one thread notifies the game list....
         while (f.threadsRunning == 1);
 
@@ -269,17 +226,72 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Get's search term from search- text field
+     * Menu
      *
+     * @param menu
      * @return
      */
 
-    public String getSearchTerm()
-    {
-        final EditText searchText=(EditText)findViewById(R.id.search);
-        Log.d (tag,"----------+++++++++++"+searchText.getText().toString());
-        return searchText.getText().toString();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Get Search field
+        SearchView searchView=(SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        SearchView.OnQueryTextListener querryTextListener=new SearchView.OnQueryTextListener(){
+            public boolean onQueryTextChange(String newText){
+                st=newText;
+                final ProgressBar progress=(ProgressBar) findViewById(R.id.progress);
+                updateHighscoreList(gl,progress,sortingOrder);
+                return true;
+            }
+
+            //Get search field input......
+            public boolean onQueryTextSubmit (String querry){
+                System.out. println("---------"+querry);
+                final ProgressBar progress=(ProgressBar)findViewById(R.id.progress);
+                st=querry;
+                updateHighscoreList(gl,progress,sortingOrder);
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(querryTextListener);
+        // End
+        return super.onCreateOptionsMenu(menu);
     }
+
+    /*
+     * Menu item clicked.
+     *
+     * Callback if item was clicked
+     */
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            // Show info?
+                case R.id.action_settings:
+                    Intent in = new Intent(this, About.class);
+                    this.startActivity(in);
+
+            case R.id.action_sort:
+                //todo should also saved in instance state
+                if(sortingOrder.equals(sortAscending)) {
+                    sortingOrder=sortDescending;
+                } else {
+                    sortingOrder=sortAscending;
+                }
+                final ProgressBar progress=(ProgressBar) findViewById(R.id.progress);
+                updateHighscoreList(gl,progress,sortingOrder);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
 
 

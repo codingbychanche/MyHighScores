@@ -4,16 +4,24 @@
     tools:context="com.example.berthold.highscore.MainActivity">
 
     <item
-        android:id="@+id/about"
-        android:orderInCategory="100"
+        android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_info_details"
-        app:showAsAction="ifRoom|withText" />
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="100"
+        android:title="@string/action_settings" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_sort"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        app:showAsAction="ifRoom|collapseActionView"
         android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_preferences"
-        app:showAsAction="ifRoom|withText" />
-        app:showAsAction="never" />
+        android:title="@string/action_sort" />
+
+    <item
+        android:id="@+id/action_search"
+        android:title="@string/search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
 </menu>
