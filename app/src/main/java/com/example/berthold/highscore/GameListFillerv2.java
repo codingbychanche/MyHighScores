@@ -29,6 +29,7 @@ import android.util.Log;
 import java.io.File;
 
 
+
 public class GameListFillerv2 implements Runnable{
 
     //public static   Bitmap bitmapOfScreenshoot;
@@ -44,6 +45,12 @@ public class GameListFillerv2 implements Runnable{
     public static int threadsRunning;
     private static SpannableString gameName;
     public int i;
+
+    public static final int SREENSHOOT_WIDTH=350;
+    public static final int SCREENSHOOT_HEIGHT=175;
+
+    // Debug
+    String tag;
 
     /**
      * Constructor
@@ -73,20 +80,19 @@ public class GameListFillerv2 implements Runnable{
     @Override
     public void run() {
 
+        tag=GameListFillerv2.class.getSimpleName();
+
         // Thread control
         // Check if this thread is already running. If so, don't do it again!
 
         if (threadsRunning ==0) {   // Check if already running
-
             threadsRunning=1;
-
             h.post(new Runnable() {
                 @Override
                 public void run() {
                     gameList.clear();
                 }
             });
-
 
             // Check if a search item was passed:
             // If so, clear the list and fill it with the search result or,
@@ -96,7 +102,6 @@ public class GameListFillerv2 implements Runnable{
             // new items. This should speed things up, but! For the time being,
             // 'gameList' is empty if a new activity was started thus this makes no
             // difference for the time being.
-
             if (search.equals("")){
                 search = "%";
             } else{
@@ -138,7 +143,7 @@ public class GameListFillerv2 implements Runnable{
                             try {
                                 key1 = Integer.parseInt(r[0]);
                             } catch (Exception e) {
-                                System.out.println("-------Interger Parsing went wrong");
+                                Log.d(tag," Interger Parsing went wrong");
                                 key1 = 0;
                             }
 
@@ -199,10 +204,10 @@ public class GameListFillerv2 implements Runnable{
                                 // Check if image file exists
                                 if ((new File(path)).exists()) {
                                     metaData.inSampleSize = 10;       // Scale image down in size and reduce it's memory footprint
-                                    bitmapOfScreenshoot = BitmapFactory.decodeFile(path, metaData);
+                                    bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT);
                                 } else {
                                     metaData.inSampleSize = 3;
-                                    bitmapOfScreenshoot = BitmapFactory.decodeResource(c.getResources(), R.drawable.no_picture_taken_yet, metaData);
+                                    bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeResource(c.getResources(), R.drawable.no_picture_taken_yet, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT);
                                 }
                                 resultFromScores = DB.sqlRequest("select score from scores where key2=" + key1, MainActivity.conn);
                                 int numberOfScores = resultFromScores.toString().split("#").length;
@@ -211,7 +216,7 @@ public class GameListFillerv2 implements Runnable{
                                 if (resultFromScores.toString().equals("empty")) {
                                     entryType = GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET;
                                     metaData.inSampleSize = 3;
-                                    bitmapOfScreenshoot = BitmapFactory.decodeResource(c.getResources(), R.drawable.click_to_add, metaData);
+                                    bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeResource(c.getResources(), R.drawable.click_to_add, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT);
                                     numberOfScores = 0;
                                 }
 
