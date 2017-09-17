@@ -29,13 +29,19 @@ import java.io.IOException;
 
 public class NewScoreV2 extends AppCompatActivity {
 
-    int IMAGE_CAPTURE=1;     // Req- code for camera usage
+    private int IMAGE_CAPTURE=1;    // Req- code for camera usage
 
-    Uri imageS;              // Uri for screenshoot
-    String pic;              // Screenshoot path
-    int key1;                // Link to game this score belongs to
-    int pictureKey;          // Link to score entry a picture belongs to
-    String name;
+    private Uri imageS;             // Uri for screenshoot
+    private String pic;             // Screenshoot path
+    private int key1;               // Link to game this score belongs to
+    private String name;            // Name of the game
+
+    private static final int PIC_WIDTH=1000;    // This is the size at which the picture will saved
+    private static final int PIC_HEIGHT=500;
+    private static final int COMPRESS=100;      // Compression rate 0 means max and worst quality, 100 means best...
+
+    // Debug info
+    String tag;
 
     /**
      * Add a new score
@@ -50,12 +56,14 @@ public class NewScoreV2 extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Debug
+        tag=NewScoreV2.class.getSimpleName();
+
         Bundle extra=getIntent().getExtras();
         key1=extra.getInt("key1");
         name=extra.getString("name");
 
         // Input fields
-
         final EditText scoreFieldO;
         scoreFieldO = (EditText) findViewById(R.id.score);
 
@@ -67,7 +75,6 @@ public class NewScoreV2 extends AppCompatActivity {
 
         // Fab's
         // Save score
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,20 +87,20 @@ public class NewScoreV2 extends AppCompatActivity {
 
                 // If score is not 0, then save it and leave this activity.
                 if (!s.equals("") && score !=0) {
-                    saveScore(score,c,e);
-
-                    finish();
-
-                } else {
-                    saveNegative();
-                    finish();
-
-                }
+                    // If score just entered already exists, don't save it!
+                    if (DB.doesExist("scores","score",String.valueOf(score),MainActivity.conn)) {
+                        scoreDoesAlreadyExist();
+                        saveNegative();
+                    } else {
+                        saveScore(score, c, e);
+                        finish();
+                    }
+                // Score is 0 or no score was entered, Inform user that this could not be saved
+                } else saveNegative();
             }
         });
 
         // Take screenshoot ?
-
         ImageButton photo=(ImageButton)findViewById(R.id.kamera);
         photo.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -153,8 +160,6 @@ public class NewScoreV2 extends AppCompatActivity {
      * @param   score       Value of score to be saved
      * @param   comment     A comment e.g. Difficulty: hard....
      * @param   evaluation  An game speciefic evaluation,like: "Star cook first class" or "Best ever..."
-     * @global  pic         Picture path of screenshoot
-     *
      */
 
     private void saveScore(int score,String comment,String evaluation)
@@ -163,8 +168,7 @@ public class NewScoreV2 extends AppCompatActivity {
         DB.insert("insert into scores (key2,score,date,comment,evaluation,picture) values " +
                     "("+key1+"," + score +",CURRENT_TIMESTAMP,'"+comment+"','"+evaluation+"','"+pic+"')", MainActivity.conn);
 
-        Log.d("myDebug ","Saved score. Picture Path "+pic);
-
+        Log.d(tag,"Saved score. Picture Path "+pic);
         savePositive();
     }
 
@@ -188,25 +192,13 @@ public class NewScoreV2 extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Nichts gemerkt", Toast.LENGTH_LONG).show();
     }
 
-    /*
-     * Restart this activity
+    /**
+     * Score already exists
      *
      */
 
-    private void restart()
-    {
-        // Before we leave, we need to send key1 back to list per game
-
-        Intent in=new Intent(NewScoreV2.this,ScoreListPerGame.class);
-        in.putExtra("key1",key1);
-        in.putExtra("name",name);
-
-        // This flag destroy's the activity from which this activity
-        // was started from, if it is still running.
-
-        in.addFlags(in.FLAG_ACTIVITY_CLEAR_TOP);
-        savePositive();
-        startActivity(in);
+    private void  scoreDoesAlreadyExist(){
+        Toast.makeText(getApplicationContext(), "Dieser Punktestand wurde schon eingetragen", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -236,26 +228,26 @@ public class NewScoreV2 extends AppCompatActivity {
                     // Get image just taken and save it compressed
                     // This only reduces the quality and the memory footprint, but not
                     // the size of the picture taken!
-                    // todo: find a way to reduce the size of the image also. Could speed up thing's a bit
                     FileOutputStream fos=new FileOutputStream(path);
-                    Bitmap b = MediaStore.Images.Media.getBitmap(getContentResolver(), imageS);
-                    b.compress(Bitmap.CompressFormat.JPEG,15,fos);
+                    Bitmap b = MyBitmapTools.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), imageS),PIC_WIDTH,PIC_HEIGHT);
+                    b.compress(Bitmap.CompressFormat.JPEG,COMPRESS,fos);
                     fos.close();
 
                     // Show picture just taken
                     ImageButton photo=(ImageButton)findViewById(R.id.kamera);
                     BitmapFactory.Options metaData = new BitmapFactory.Options();
                     metaData.inJustDecodeBounds = false;
-                    metaData.inSampleSize = 12;       // Scale image down in size and reduce it's memory footprint
-                    b = BitmapFactory.decodeFile(path, metaData);
+                    metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
+                    b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),800,500);
                     photo.setImageBitmap(b);
 
                     // Set global picture path
                     pic=path;
-                    Log.d("myDebug ","Picture Path "+path);
+                    Log.d(tag,"Picture Path "+path);
 
                 } catch (IOException e) {
-                    Log.d("myDebug ","Could not save image");
+                    Log.d(tag,"Could not save image");
+                    Log.d(tag,e.toString());
                 }
             }
         }

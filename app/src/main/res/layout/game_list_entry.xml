@@ -12,7 +12,7 @@
         android:paddingTop="10px"
         android:paddingBottom="5px"
         android:paddingLeft="5px"
-        android:layout_width="400px"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <ImageView
@@ -26,7 +26,7 @@
         android:textSize="25px"
         android:textColor="@color/shellText"
         android:textStyle="bold"
-        android:paddingLeft="5px"
+        android:paddingLeft="25px"
         android:paddingTop="10px"
         android:layout_toRightOf="@+id/calendar"
         android:layout_width="wrap_content"

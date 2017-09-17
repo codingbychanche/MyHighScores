@@ -71,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setSubtitle("Spiele:"   +DB.getNumberOfRows("games",conn)+" Punkte:"+
-                                        +DB.getNumberOfRows("scores",conn));
-
         // Sorting order
         sortingOrder=sortAscending;
 
@@ -134,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 view.getContext().startActivity(in);
             }
         });
-
-
     }
 
     /**
@@ -190,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
         Log.d (tag,"-----Main: Restart");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setSubtitle("∑Spiele:"   +DB.getNumberOfRows("games",conn)+" ∑Punkte:"+
+                +DB.getNumberOfRows("scores",conn));
 
         // todo: Test, shows the files dir
         String [] dir=FileSystemUtils.getDir (getFilesDir());

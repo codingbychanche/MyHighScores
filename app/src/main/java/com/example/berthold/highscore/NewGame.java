@@ -81,32 +81,32 @@ public class NewGame extends AppCompatActivity {
                 String n=gameNameFieldO.getText().toString();
                 String name=n.trim();
 
-                // If name of game was entered, save entry. Else, leave without saving
+                // If name of game was entered, save entry. Else, notify user that he has to enter a name in order
+                // to create a new entry.
                 if (!name.equals("")) {
 
-                // Save game, if it does not already exists
-                if (!DB.doesExist("games","name",name,MainActivity.conn)) {
-                        DB.insert("insert into games (name) values ('" + name + "')", MainActivity.conn);
-                        Toast.makeText(getApplicationContext(), "Neues Spiel hinzugefügt", Toast.LENGTH_LONG).show();
+                    // Save game, if it does not already exists
+                    if (!DB.doesExist("games","name",name,MainActivity.conn)) {
+                            DB.insert("insert into games (name) values ('" + name + "')", MainActivity.conn);
+                            Toast.makeText(getApplicationContext(), "Neues Spiel hinzugefügt", Toast.LENGTH_LONG).show();
 
-                        // Get primary key
-                        int key1=DB.getKey1("games","name",name,MainActivity.conn);
+                            // Get primary key
+                            int key1=DB.getKey1("games","name",name,MainActivity.conn);
 
-                        // Now enter score for this game....
-                        Intent i = new Intent(NewGame.this, NewScoreV2.class);
+                            // Now enter score for this game....
+                            Intent i = new Intent(NewGame.this, NewScoreV2.class);
 
-                        // This flag destroy's the activity from which this activity
-                        // was started from, if it is still running.
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        i.putExtra("key1", key1);
-                        i.putExtra("name", name);
-                        startActivity(i);
-                    } else {
-                        gameAlreadyExists();
+                            // This flag destroy's the activity from which this activity
+                            // was started from, if it is still running.
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            i.putExtra("key1", key1);
+                            i.putExtra("name", name);
+                            startActivity(i);
+                        } else {
+                            gameAlreadyExists();
                     }
                 } else {
                         noNameOfGameGiven();
-                    Resources.getSystem().getString(R.string.add_score);
                 }
 
             }
