@@ -3,7 +3,7 @@ package com.example.berthold.highscore;
 /**
  * Lists the scores of the selected game
  *
- * Allows the user to enter a new score for the game
+ * Allows the user to enter a new score for this game
  *
  * @author Berthold Fritz 2016
  */
@@ -75,7 +75,6 @@ public class ScoreListPerGame extends AppCompatActivity {
         // Gui
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.save_score);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.fab_bounce);
-        screenshoot=(ImageView)findViewById(R.id.screenshoot);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,39 +102,6 @@ public class ScoreListPerGame extends AppCompatActivity {
                 // r[3]=evaluation
                 String date = FormatTimeStamp.german(r[1], FormatTimeStamp.WITH_TIME);
                 niceResult.append(df.format(Integer.decode(r[0])) + "\n" + date + ",");
-
-            }
-
-            // Get Highest score for this game and load the screenshoot
-            StringBuffer highscore = DB.sqlRequest("select max(score),picture from scores where key2=" + key1, MainActivity.conn);
-            String[] h=highscore.toString().split(",");
-            //todo bug when no picture taken
-            final String path=h[1].replace("#","");
-
-            // Check if image file exists
-            if ((new File(path)).exists()) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmapOfScreenshoot = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.no_picture_taken_yet);
-
-                        BitmapFactory.Options metaData = new BitmapFactory.Options();
-                        metaData.inJustDecodeBounds = false;
-
-                        //Get screen size = target size of pic
-                        Display display = getWindowManager().getDefaultDisplay();
-                        Point size = new Point();
-                        display.getSize(size);
-                        float displayWidth = size.x;
-                        float displayHeight = size.y;
-
-                        metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
-                        bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData), displayWidth, displayHeight);
-                        screenshoot.setImageBitmap(bitmapOfScreenshoot);
-
-                    }
-                }).run();
             }
 
             // Show List

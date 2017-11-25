@@ -14,6 +14,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.renderscript.Sampler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +38,7 @@ public class NewScoreV2 extends AppCompatActivity {
     private int key1;               // Link to game this score belongs to
     private String name;            // Name of the game
 
-    private static final int PIC_WIDTH=1000;    // This is the size at which the picture will saved
+    private static final int PIC_WIDTH=800;     // This is the size at which the picture will saved
     private static final int PIC_HEIGHT=500;
     private static final int COMPRESS=100;      // Compression rate 0 means max and worst quality, 100 means best...
 
@@ -87,8 +89,11 @@ public class NewScoreV2 extends AppCompatActivity {
 
                 // If score is not 0, then save it and leave this activity.
                 if (!s.equals("") && score !=0) {
-                    // If score just entered already exists, don't save it!
-                    if (DB.doesExist("scores","score",String.valueOf(score),MainActivity.conn)) {
+                    // If score just entered already exists for this game, don't save it!
+                    StringBuffer check=DB.sqlRequest("select score from scores where key2="+key1+"and score="+score,MainActivity.conn);
+                    String r=check.toString().replace("#","").trim();
+                    System.out.println("---------"+r+"result "+check );
+                    if (r.equals(Integer.toString(score))) {
                         scoreDoesAlreadyExist();
                         saveNegative();
                     } else {
@@ -238,7 +243,7 @@ public class NewScoreV2 extends AppCompatActivity {
                     BitmapFactory.Options metaData = new BitmapFactory.Options();
                     metaData.inJustDecodeBounds = false;
                     metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
-                    b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),800,500);
+                    b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),PIC_WIDTH,PIC_HEIGHT);
                     photo.setImageBitmap(b);
 
                     // Set global picture path

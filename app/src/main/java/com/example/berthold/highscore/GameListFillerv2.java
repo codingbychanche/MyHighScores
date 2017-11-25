@@ -113,7 +113,7 @@ public class GameListFillerv2 implements Runnable{
                     }
                 });
             }
-
+            
             final StringBuffer resultFromGames = DB.sqlRequest("select key1,name,picture from games where name like '%" + search + "%' order by name "+sortingOrder, MainActivity.conn);
             final String[] rsGames = resultFromGames.toString().split("#");
 
@@ -203,10 +203,10 @@ public class GameListFillerv2 implements Runnable{
 
                                 // Check if image file exists
                                 if ((new File(path)).exists()) {
-                                    metaData.inSampleSize = 10;       // Scale image down in size and reduce it's memory footprint
+                                    metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
                                     bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT);
                                 } else {
-                                    metaData.inSampleSize = 3;
+                                    metaData.inSampleSize = 1;
                                     bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeResource(c.getResources(), R.drawable.no_picture_taken_yet, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT);
                                 }
                                 resultFromScores = DB.sqlRequest("select score from scores where key2=" + key1, MainActivity.conn);

@@ -29,16 +29,8 @@
         android:alignmentMode="alignBounds"
         android:layout_weight="0.20">
 
-        <ImageView
-            android:id="@+id/screenshoot"
-            android:background="@color/colorSepparator"
-            android:layout_centerHorizontal="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <ListView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/scoreList"
-            android:layout_below="@+id/screenshoot"
             android:layout_width="fill_parent"
             android:layout_height="356dp"
             android:padding="10dp"
