@@ -4,16 +4,27 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:clickable="true">
 
+    <!--    This shows how pictures assigned to the view can made to be
+            fit to the images view bounds.
+            The Image wil be scaled and aspect ratio is kept.
+            If the image can not be scaled then it is cut to size
+            and centered within the view's bonds -->
+
     <ImageView
+
         android:id="@+id/gameScreenShoot"
         android:paddingTop="10px"
         android:paddingBottom="5px"
         android:paddingLeft="5px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+        android:layout_width="300px"
+        android:layout_height="200px"
+
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:id="@+id/calendar"

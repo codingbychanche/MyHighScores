@@ -3,11 +3,11 @@ package com.example.berthold.highscore;
 /**
  * Bitmap Tools
  *
- * A collection of methods to process bitmap gfx
+ * A collection of gfx algorithm's
  *
  * @author  Berthold Fritz 2017
  *
- * 16.6.2017
+ * 11/2017
  */
 
 import android.graphics.Bitmap;
@@ -27,13 +27,15 @@ public class MyBitmapTools {
      *
      * Scales a bitmap and keeps it's aspect ratio
      *
+     * ToDo: Gets wrong result when the sestination size is bigger then the source size.....
+     *
      * @param b         Bitmap to be scaled
      * @param destW     New size
      * @param destH
      * @return          Scaled bitmap
      */
 
-    public static Bitmap scaleBitmap(Bitmap b,float destW,float destH){
+    public static Bitmap scaleBitmap(Bitmap b,float destW,float destH,String fileName){
 
         // Calculate new width and height, keep aspect ratio
         float sourceRatio;
@@ -41,19 +43,29 @@ public class MyBitmapTools {
         float sourceH=b.getHeight();
 
         // Calculate...
-        if (sourceW >= sourceH){            // Source picture is in landscape mode?
+        sourceRatio=1;                      // Remains 1 if pic is rectancular
+        if (sourceW > sourceH){             // Source picture is in landscape mode?
             sourceRatio=sourceH/sourceW;
             destH=destW*sourceRatio;
-        } else {                            // Source picture is in portrait mode!
+            destW=destH/sourceRatio;
+        }
+        if (sourceW< sourceH){
+            // Source picture is in portrait mode
             sourceRatio=sourceW/sourceH;
             destW=destH*sourceRatio;
-            destH=destH/2;                  // That is just an educated guess, remove if you don't like it....
+            destH=destW/sourceRatio;
         }
-        Log.v(tag,"Ratio:"+sourceRatio+"  destW "+destW+"   destH"+destH);
+        if (sourceH==sourceW){
+            // Source picture is rectancular
+            sourceRatio=destW/sourceW;
+            destW=sourceW*sourceRatio;
+            destH=sourceH*sourceRatio;
+        }
+        Log.v(tag,"Name:"+fileName+"Ratio:"+sourceRatio+" source width "+sourceW+"   source height"+sourceH);
 
         // Scale picture to screen size
         Bitmap changedBitmap=Bitmap.createScaledBitmap(b,(int)destW,(int)destH,false);
-        Log.v(tag,"Destination picture => Ratio:"+sourceRatio+"  destW "+(int)destW+"   destH "+(int)destH);
+        Log.v(tag,"Src dpi:"+b.getDensity() +"  Destination picture => Ratio:"+sourceRatio+"  destW "+(int)destW+"   destH "+(int)destH);
 
         return changedBitmap;
     }
@@ -133,11 +145,45 @@ public class MyBitmapTools {
                 }
             }
         }
+        // Cut edges. This way the pic will be as heigh and as width the radius is
+        changedBitmap=toRectangle(changedBitmap);
         return changedBitmap;
     }
 
     /**
-     * Returns a monocrome image of the image given.
+     * Returns rectangular bitmap, which is centered on the source bitmap.
+     */
+
+    public static Bitmap toRectangle (Bitmap b){
+
+        int width=b.getWidth();         // Size
+        int height=b.getHeight();
+        int destB;                      // Destination size => destB x destB
+        Bitmap changedBitmap=null;
+
+        int sx;
+        int sy;
+
+        if (width>height) destB=height; // Landscape mode?
+        else destB=width;               // Portraid mode?
+
+        if (width==height) return b;    // If already rectancular, return bitmap unchanged.....
+
+        changedBitmap = Bitmap.createBitmap(destB, destB, Bitmap.Config.ARGB_8888);
+
+        sy = height / 2 - destB / 2;
+        for (int y = 0; y <= destB - 1; y++) {
+            sx = width / 2 - destB / 2;
+            for (int x = 0; x <= destB - 1; x++) {
+                changedBitmap.setPixel(x, y, b.getPixel(sx++, sy));
+            }
+            sy++;
+        }
+        return changedBitmap;
+    }
+
+    /**
+     * Returns a monochrome image of the image given.
      * Uses Floyd- Steinberg single line dithering algorythmen
      *
      * @param   b               Bitmap to process

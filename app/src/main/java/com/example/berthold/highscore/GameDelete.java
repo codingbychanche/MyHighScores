@@ -139,13 +139,16 @@ public class GameDelete extends AppCompatActivity {
                 // delete game
 
                     // 1. Delete all picture files
-                    // todo: For the time being, only one screenshoot, for the highscore, is saved
                     // => This means, that only the first search result 'p[0]' contains the path
                     // to this picture. 'p[1]' and so on, contains nothing....
                     StringBuffer picturePathList=DB.sqlRequest("select picture from scores where key2="+key1,MainActivity.conn);
                     String [] pl=picturePathList.toString().split("#");
-                    File f=new File(pl[0]);
-                    f.delete(); // Delete file, if exists. If no such file=> no problem....
+
+                    for (int i=0;i<=pl.length-1;i++) {
+                        System.out.println("Deleting......." + pl[i]);
+                        File f = new File(pl[i]);
+                        f.delete(); // Delete file, if exists. If no such file=> no problem....
+                    }
 
                     // Delete game and...
                     s.executeUpdate("delete from games where key1=" + key1);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.berthold.highscore.ScoreDetailView">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/screenshoot"
+            android:layout_width="match_parent"
+            android:layout_height="400px"
+
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+
+            android:background="@color/colorSepparator"/>
+
+        <ProgressBar
+            android:id="@+id/pic_progress"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/info"
+            android:textSize="20dp"
+            android:layout_below="@+id/screenshoot"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

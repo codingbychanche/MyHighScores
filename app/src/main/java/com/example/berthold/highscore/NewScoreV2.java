@@ -21,8 +21,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -31,7 +33,8 @@ import java.io.IOException;
 
 public class NewScoreV2 extends AppCompatActivity {
 
-    private int IMAGE_CAPTURE=1;    // Req- code for camera usage
+    private int IMAGE_CAPTURE=1;                // Req- code for camera usage
+    private int GET_SCREENSHOOT_FROM_FILE=2;    // Req- code for screenshoot from file
 
     private Uri imageS;             // Uri for screenshoot
     private String pic;             // Screenshoot path
@@ -65,7 +68,7 @@ public class NewScoreV2 extends AppCompatActivity {
         key1=extra.getInt("key1");
         name=extra.getString("name");
 
-        // Input fields
+        // Input
         final EditText scoreFieldO;
         scoreFieldO = (EditText) findViewById(R.id.score);
 
@@ -110,8 +113,8 @@ public class NewScoreV2 extends AppCompatActivity {
         photo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View view){
-            // Get score from input
 
+                // Get score from input
                 String s=scoreFieldO.getText().toString();
                 int score=getScore(s);
                 String c=gameCommentFieldO.getText().toString();
@@ -123,6 +126,23 @@ public class NewScoreV2 extends AppCompatActivity {
                 }
             }
 
+        });
+
+        // Select screenshoot from file?
+        Button getExistingScreenshoot=(Button) findViewById(R.id.getscreenshootfromfile);
+        getExistingScreenshoot.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                String s=scoreFieldO.getText().toString();
+                int score=getScore(s);
+                String c=gameCommentFieldO.getText().toString();
+                String e=gameEvaluationO.getText().toString();
+
+                if(!s.equals("") && score!=0){
+                    Intent i = new Intent(NewScoreV2.this, FileChooserDeluxe.class);
+                    startActivityForResult(i, GET_SCREENSHOOT_FROM_FILE);
+                }
+            }
         });
     }
 
@@ -169,7 +189,6 @@ public class NewScoreV2 extends AppCompatActivity {
 
     private void saveScore(int score,String comment,String evaluation)
     {
-
         DB.insert("insert into scores (key2,score,date,comment,evaluation,picture) values " +
                     "("+key1+"," + score +",CURRENT_TIMESTAMP,'"+comment+"','"+evaluation+"','"+pic+"')", MainActivity.conn);
 
@@ -221,20 +240,21 @@ public class NewScoreV2 extends AppCompatActivity {
     {
         super.onActivityResult(requestCode,resultCode,data);
 
-        // Take picture with camera
-
+        // Taken picture with camera?
         if(requestCode==IMAGE_CAPTURE){
             if(resultCode==RESULT_OK) {
                 try
                 {
                     File f = getFilesDir();
-                    String path = (f.getAbsolutePath() + "/"+name);
+                    // Build files path- name, make it unique by adding system time....
+                    // This way we can save a screenshoot for every score recorded
+                    String path = (f.getAbsolutePath() + "/"+name+"_"+System.currentTimeMillis());
 
                     // Get image just taken and save it compressed
                     // This only reduces the quality and the memory footprint, but not
                     // the size of the picture taken!
                     FileOutputStream fos=new FileOutputStream(path);
-                    Bitmap b = MyBitmapTools.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), imageS),PIC_WIDTH,PIC_HEIGHT);
+                    Bitmap b = MyBitmapTools.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), imageS),PIC_WIDTH,PIC_HEIGHT,"-");
                     b.compress(Bitmap.CompressFormat.JPEG,COMPRESS,fos);
                     fos.close();
 
@@ -243,7 +263,7 @@ public class NewScoreV2 extends AppCompatActivity {
                     BitmapFactory.Options metaData = new BitmapFactory.Options();
                     metaData.inJustDecodeBounds = false;
                     metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
-                    b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),PIC_WIDTH,PIC_HEIGHT);
+                    b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),PIC_WIDTH,PIC_HEIGHT,"-");
                     photo.setImageBitmap(b);
 
                     // Set global picture path
@@ -254,6 +274,40 @@ public class NewScoreV2 extends AppCompatActivity {
                     Log.d(tag,"Could not save image");
                     Log.d(tag,e.toString());
                 }
+            }
+        }
+
+        // Picture chosen from file?
+        if (requestCode==GET_SCREENSHOOT_FROM_FILE ){
+            if (data.hasExtra("path")) {
+
+                // Set global picture path
+                String path=data.getExtras().getString("path");
+                pic=path;
+
+                try {
+                    File f = getFilesDir();
+                    // Build files path- name, make it unique by adding system time....
+                    // This way we can save a screenshoot for every score recorded
+                    String savePath = (f.getAbsolutePath() + "/" + name + "_" + System.currentTimeMillis());
+
+                    // Get image just taken and save it compressed
+                    // This only reduces the quality and the memory footprint, but not
+                    // the size of the picture taken!
+                    BitmapFactory.Options metaData = new BitmapFactory.Options();
+                    metaData.inJustDecodeBounds = false;
+                    metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
+
+                    FileOutputStream fos = new FileOutputStream(savePath);
+                    Bitmap b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(pic, metaData), PIC_WIDTH, PIC_HEIGHT, "-");
+                    b.compress(Bitmap.CompressFormat.JPEG, COMPRESS, fos);
+                    fos.close();
+
+                    // Show picture just taken
+                    ImageButton photo=(ImageButton)findViewById(R.id.kamera);
+                    photo.setImageBitmap(b);
+
+                } catch (Exception f) {}
             }
         }
     }

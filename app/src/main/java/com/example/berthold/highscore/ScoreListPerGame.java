@@ -16,6 +16,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Process;
 import android.os.StrictMode;
+import android.renderscript.Sampler;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,9 +43,14 @@ public class ScoreListPerGame extends AppCompatActivity {
     private ListView myListView;
     private ArrayAdapter myListAdapter;
     private int key1;
-    DecimalFormat df=new DecimalFormat("#,###,###");
 
-    ImageView screenshoot;
+    StringBuffer result;
+    String [] rs;
+    String [] r;
+
+    String date;
+
+    DecimalFormat df=new DecimalFormat("#,###,###");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +76,6 @@ public class ScoreListPerGame extends AppCompatActivity {
         System.out.println("----- recieved key 1:" + name);
 
         // Show game title in action bar
-
         getSupportActionBar().setTitle(name);
 
         // Gui
@@ -87,21 +93,23 @@ public class ScoreListPerGame extends AppCompatActivity {
         });
 
         // Get data
-        StringBuffer result = DB.sqlRequest("select score,date from scores where key2=" + key1 + " order by date DESC", MainActivity.conn);
-        String[] rs = result.toString().split("#");     // Get rows
+        result = DB.sqlRequest("select key1,score,date,picture,comment,evaluation from scores where key2=" + key1 + " order by date DESC", MainActivity.conn);
+        rs = result.toString().split("#");              // Get rows
         StringBuffer niceResult=new StringBuffer();     // Will contain date and score in a user- readable format
 
         if (!rs[0].equals("empty")) {
             fab.clearAnimation();
             for (int i = 0; i < rs.length; i++) {
-                String[] r = rs[i].toString().split(",");       // Separate fields r[0]=score// r[1]= date
+                r = rs[i].toString().split(",");       // Separate fields
 
-                // r[0]=Score
-                // r[1]=date
-                // r[2]=comment
-                // r[3]=evaluation
-                String date = FormatTimeStamp.german(r[1], FormatTimeStamp.WITH_TIME);
-                niceResult.append(df.format(Integer.decode(r[0])) + "\n" + date + ",");
+                // r[0]=Key1
+                // r[1]=Score
+                // r[2]=date
+                // r[3]=picture path
+                // r[4]=comment
+                // r[5]=evaluation
+                date = FormatTimeStamp.german(r[2], FormatTimeStamp.WITH_TIME);
+                niceResult.append(df.format(Integer.decode(r[1])) + "\n" + date + ",");
             }
 
             // Show List
@@ -110,7 +118,31 @@ public class ScoreListPerGame extends AppCompatActivity {
             myListAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, rr);
             myListView.setAdapter(myListAdapter);
 
-        } else fab.startAnimation(animation);
+            // Item clicked? If yes, open detail view.....
+            // We need the key1 value of the selected score row which
+            // we pass to to detail view activity in order to open the
+            // data base entry....
+            myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    r = rs[position].toString().split(",");       // Separate fields
+                    int k1= Integer.valueOf(r[0]);
+                    System.out.println("--------------Pos:"+position+"     Key1"+k1);
+
+                    Intent in = new Intent(view.getContext(), ScoreDetailView.class);
+                    in.putExtra("key1",k1);
+                    in.putExtra("game",name);
+                    in.putExtra("date",date);
+                    in.putExtra("score",df.format(Integer.decode(r[1])));
+                    in.putExtra("picpath",r[3]);
+
+                    if (r.length==5) in.putExtra("comment",r[4]);
+                    if (r.length==6) in.putExtra("evaluation",r[5]);
+
+                    view.getContext().startActivity(in);
+                }
+            });
+        } else fab.startAnimation(animation);
     }
 }

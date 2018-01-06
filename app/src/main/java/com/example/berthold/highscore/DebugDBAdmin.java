@@ -1,20 +1,25 @@
 /**
  * Debug DB
  *
- * Provides an simple interface to test sql querys on the db
+ * Provides an simple interface to test sql qerry's on the db
  *
- * @author Berthold Fritz 3/2017
+ * @author Berthold Fritz 12/2017
  *
  */
+
 package com.example.berthold.highscore;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.*;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.text.method.BaseMovementMethod;
+import android.widget.PopupMenu;
 
 public class DebugDBAdmin extends AppCompatActivity {
 
@@ -44,11 +49,8 @@ public class DebugDBAdmin extends AppCompatActivity {
             }
         });
 
-
         // Clear command
-
         ImageButton clearCommand=(ImageButton) findViewById(R.id.clearCommand);
-
         clearCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,13 +71,24 @@ public class DebugDBAdmin extends AppCompatActivity {
         });
 
         // From?
-
-        Button insertFrom=(Button) findViewById(R.id.insertFrom);
+        // This shows how a 'popUp'- menu widged can be used.......
+        final Button insertFrom=(Button) findViewById(R.id.insertFrom);
+        final android.support.v7.widget.PopupMenu pu=new android.support.v7.widget.PopupMenu(DebugDBAdmin.this,insertFrom);
+        pu.getMenuInflater().inflate(R.menu.menu_show_tables,pu.getMenu());
 
         insertFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlCommand.append(" from ");
+
+                pu.setOnMenuItemClickListener(new android.support.v7.widget.PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        pu.show();
+                        sqlCommand.append(" from "+item.toString());
+                        return false;
+                    }
+                });
+                pu.show();
             }
         });
 

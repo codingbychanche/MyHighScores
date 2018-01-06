@@ -78,7 +78,6 @@ public class DB {
 			int maxcol=md.getColumnCount();
 			
 			// Get all columns and return them in an string buffer
-
 			if(rs.isBeforeFirst()) {		// Check if result is empty
 				while (rs.next()) {
 					for (int coll = 1; coll <= maxcol; coll++) {
@@ -182,18 +181,16 @@ public class DB {
 	 * @param 	value  Value of column
 	 */
 
-	public static int getKey1(String table,String column,String value,Connection conn)
-	{
-		StringBuffer rs = DB.sqlRequest("select key1 from "+table+" where "+column+"='"+value+"'",conn);
+	public static int getKey1(String table,String column,String value,Connection conn) {
+		StringBuffer rs = DB.sqlRequest("select key1 from " + table + " where " + column + "='" + value + "'", conn);
 		String r = rs.toString().replace("#", "").trim();
-		System.out.println("------+++++++++++++++getkey1:"+value);
+		System.out.println("------+++++++++++++++getkey1:" + value);
 		try {
 			int key1 = Integer.parseInt(r);
 			return key1;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			return 0;
 		}
 	}
-
 
 }

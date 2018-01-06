@@ -39,22 +39,42 @@
         <ImageButton
             android:id="@+id/kamera"
             android:layout_width="match_parent"
+            android:layout_height="400px"
+
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+
+            android:layout_below="@+id/score" />
+
+        <ImageView
+            android:id="@+id/camicon"
+            android:paddingTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/score"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_camera"
-            android:layout_below="@+id/score"/>
+            android:layout_centerInParent="true"
+            android:src="@android:drawable/ic_menu_camera"/>
 
         <TextView
             android:id="@+id/help"
-            android:layout_below="@+id/kamera"
-            android:paddingLeft="5dp"
+            android:layout_below="@+id/camicon"
+            android:layout_centerHorizontal="true"
             android:text="@string/camara_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/getscreenshootfromfile"
+            android:layout_below="@+id/kamera"
+            android:text="@string/get_existig_screenshoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/comment"
             android:paddingTop="20dp"
-            android:layout_below="@+id/help"
+            android:layout_below="@+id/getscreenshootfromfile"
             android:hint="@string/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

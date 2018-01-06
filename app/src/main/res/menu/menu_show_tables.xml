@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- List of DB's table names -->
+
+    <item
+        android:title="games">
+    </item>
+
+    <item
+        android:title="scores">
+    </item>
+
+</menu>
