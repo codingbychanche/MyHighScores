@@ -1,13 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * MyBitmapTools.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 8/26/18 10:21 PM
+ */
+
 /**
- * Bitmap Tools
- *
- * A collection of gfx algorithm's
- *
- * @author  Berthold Fritz 2017
- *
- * 11/2017
+ * A collection of gfx- tools
  */
 
 import android.graphics.Bitmap;
@@ -23,11 +28,30 @@ public class MyBitmapTools {
     static String tag=MyBitmapTools.class.getSimpleName();
 
     /**
+     * Calculate sample size
+     *
+     */
+
+    public static int calcSampleSize(int height,int width,int outHeight,int outWidth)
+    {
+        int sampleSize=1;
+
+        if(height>outHeight || width>outWidth) {
+            while ((height > outHeight) && (width > outWidth)) {
+                height = height / 2;
+                width = width / 2;
+                sampleSize = sampleSize * 2;
+            }
+        }
+        return sampleSize;
+    }
+
+    /**
      * Scale bitmap
      *
      * Scales a bitmap and keeps it's aspect ratio
      *
-     * ToDo: Gets wrong result when the sestination size is bigger then the source size.....
+     * ToDo: Gets wrong result when the destination size is bigger then the source size.....
      *
      * @param b         Bitmap to be scaled
      * @param destW     New size
@@ -118,10 +142,7 @@ public class MyBitmapTools {
         // Create a mutable bitmap
         Bitmap changedBitmap=Bitmap.createBitmap(m,b.getWidth(),b.getHeight(),Bitmap.Config.ARGB_8888);
 
-        // Create a round Image
-
         // Calc max rad for pic
-
         int radius;
 
         int width=b.getWidth();         // Size

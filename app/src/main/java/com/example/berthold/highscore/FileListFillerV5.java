@@ -3,11 +3,15 @@ package com.example.berthold.highscore;
 /**
  * Directory filler V5
  *
+ * This is variation of 'FileListFillerV4'
+ *
  * Motivation: First load and show file names, then add pictures and show them.
  *
  * The file names are loaded and shown faster. After that the progress of loading
  * the picture files - which can be slow - is started and while pictures are
  * added the user can already browse the files....
+ *
+ *  THIS VERSION WILL BE MAINTAINED! OTHER VERSIONS WILL NOT!!!!!
  *
  *  @author  Berthold Fritz 2017
  */
@@ -56,7 +60,7 @@ public class FileListFillerV5 extends AsyncTask<String,FileListOneEntry,String> 
      * Creates a new filler object
      */
 
-    FileListFillerV5(FileListAdapter dir, File[] fileObjects,int firstVissibleitem,int lastVissibleItem,Context c, ProgressBar p) {
+    FileListFillerV5(FileListAdapter dir, File[] fileObjects, int firstVissibleitem, int lastVissibleItem, Context c, ProgressBar p) {
         this.c = c;
         this.dir = dir;
         this.fileObjects = fileObjects;
@@ -92,37 +96,31 @@ public class FileListFillerV5 extends AsyncTask<String,FileListOneEntry,String> 
 
                 if (isCancelled()) break;
 
+                // Create row and add to custom list
+                // Set file symbol accordingly
+                // This is the default for files:
+                fileSym = BitmapFactory.decodeResource(c.getResources(), R.drawable.document);
+
+                // Check if file is a picture...
+                if (isPictureFile.check(fileObjects[i].getName()))
+                    fileSym = BitmapFactory.decodeResource(c.getResources(), R.drawable.camera);
+
+                // Check if it is a directory....
+                if (fileObjects[i].isDirectory())
+                    fileSym = BitmapFactory.decodeResource(c.getResources(), R.drawable.openfolder);
+
                 // Check if file or folder is readable
                 if (!fileObjects[i].canRead() || !fileObjects[i].exists())
                     readable = false;
                 else
                     readable = true;
 
-                    // Create row and add to custom list
-                    // Set file symbol accordingly
-                    // This is the default for files:
-                    fileSym = BitmapFactory.decodeResource(c.getResources(), R.drawable.document);
+                // Get File's last modificaton date
+                String d=new Date(new File (fileObjects[i].getAbsolutePath()).lastModified()).toString();
 
-                    // Check if file is a picture...
-                    if (isPictureFile.check(fileObjects[i].getName()))
-                        fileSym = BitmapFactory.decodeResource(c.getResources(), R.drawable.camera);
-
-                    // Check if it is a directory....
-                    if (fileObjects[i].isDirectory())
-                        fileSym = BitmapFactory.decodeResource(c.getResources(), R.drawable.openfolder);
-
-                    // Get File's last modificaton date
-                    String d = new Date(new File(fileObjects[i].getAbsolutePath()).lastModified()).toString();
-
-                    // todo Just a test, get file size
-                    long size = new File(fileObjects[i].getAbsolutePath()).getFreeSpace();
-                    Log.v(tag, "Size:" + size);
-
-                    // Add file or folder name to list
-                    FileListOneEntry e = new FileListOneEntry(FileListOneEntry.IS_ACTIVE, fileSym, fileObjects[i].getName(), readable, d);
-                    publishProgress(e);
-
-
+                // Add file or folder name to list
+                FileListOneEntry e = new FileListOneEntry(FileListOneEntry.IS_ACTIVE, fileSym, fileObjects[i].getName(), readable,d);
+                publishProgress(e);
             }
 
         // Wait a few seconds

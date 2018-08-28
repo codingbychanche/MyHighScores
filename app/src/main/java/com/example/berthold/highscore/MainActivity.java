@@ -1,13 +1,20 @@
 package com.example.berthold.highscore;
 
+/*
+ * MainActivity.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 1/26/18 11:27 PM
+ */
+
 /**
  * Highscore
  *
  * Save your favourite games highscore's fast, easy, permanent, offline.
- *
- * @author  Berthold Fritz 2017
- *
- * @version 1.0
  *
  */
 
@@ -47,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String sortAscending="ASC";
     private static final String sortDescending="DESC";
 
-    // Threads
-    static Thread filler;
+    // Async task
+    private GameListFillerV3 fillList;
 
     // ToDo Test: Used if search widget is used...
-    GameListAdapter gl;
+    GameListAdapter_OLD gl;
     String st="";
 
     /**
@@ -199,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create custom list adapter
         ArrayList<GameListEntry> gameEntry = new ArrayList<>();                 // File list
-        final GameListAdapter gameList = new GameListAdapter(this, gameEntry);  // Custom list adapter
+        final GameListAdapter_OLD gameList = new GameListAdapter_OLD(this, gameEntry);  // Custom list adapter
         gl=gameList;
         final ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(gameList);
@@ -213,16 +220,19 @@ public class MainActivity extends AppCompatActivity {
      *
      */
 
-    public void updateHighscoreList(GameListAdapter g,ProgressBar p,String sortingOrder)
+    public void updateHighscoreList(GameListAdapter_OLD g,ProgressBar p,String sortingOrder)
     {
 
-        //GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), getSearchTerm(),sortingOrder,p);
-        GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), st,sortingOrder,p);
-        //todo Don't like this, but takes care that only one thread notifies the game list....
-        while (f.threadsRunning == 1);
+        //This is the old solution to fill the game- list
+        //GameListFillerv2 f = new GameListFillerv2(g, getApplicationContext(), st,sortingOrder,p);
+        //while (f.threadsRunning == 1);
+        //filler = new Thread(f);
+        //filler.start();
 
-        filler = new Thread(f);
-        filler.start();
+        // This uses an async task
+        if (fillList!=null) fillList.cancel(true);
+        fillList=new GameListFillerV3(g, getApplicationContext(),st,sortingOrder,p);
+        fillList.execute();
     }
 
     /**
@@ -250,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
 
             //Get search field input......
             public boolean onQueryTextSubmit (String querry){
-                System.out. println("---------"+querry);
                 final ProgressBar progress=(ProgressBar)findViewById(R.id.progress);
                 st=querry;
                 updateHighscoreList(gl,progress,sortingOrder);
@@ -291,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
 
 

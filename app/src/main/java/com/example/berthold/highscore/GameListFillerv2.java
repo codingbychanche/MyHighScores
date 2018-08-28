@@ -8,6 +8,8 @@ package com.example.berthold.highscore;
  * This file replaces "gameListFiller" which was hard to control in means of starting threat's.
  * (Check the To Do's in the file mentioned)
  *
+ * THIS FILE WAS REPLACED BY 'GameListFillerV3' AND WILL NOT BE MAINTAINED ANYMORE!
+ *
  * @author  Berhold Fritz 2016
  */
 
@@ -40,10 +42,10 @@ public class GameListFillerv2 implements Runnable{
     public static String evaluation;
     public static String date;
     public static StringBuffer resultFromScores;
+    private static SpannableString gameName;
     public static int entryType;
     public static Handler h=new Handler();
     public static int threadsRunning;
-    private static SpannableString gameName;
     public int i;
 
     public static final int SREENSHOOT_WIDTH=350;
@@ -59,10 +61,10 @@ public class GameListFillerv2 implements Runnable{
     public String search;
     public String sortingOrder;
     public Context c;
-    public GameListAdapter gameList;
+    public GameListAdapter_OLD gameList;
     public ProgressBar progressInfo;
 
-    GameListFillerv2(GameListAdapter gameList, Context c,String search,String sortingOrder,ProgressBar p) {
+    GameListFillerv2(GameListAdapter_OLD gameList, Context c,String search,String sortingOrder,ProgressBar p) {
         this.search=search;
         this.c=c;
         this.gameList=gameList;
@@ -204,7 +206,7 @@ public class GameListFillerv2 implements Runnable{
                                 // Check if image file exists
                                 if ((new File(path)).exists()) {
                                     metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
-                                    bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT,"-");
+                                    bitmapOfScreenshoot=BitmapFactory.decodeFile(path, metaData);
                                 } else {
                                     metaData.inSampleSize = 1;
                                     bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeResource(c.getResources(), R.drawable.no_picture_taken_yet, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT,"-");
@@ -215,8 +217,8 @@ public class GameListFillerv2 implements Runnable{
 
                                 if (resultFromScores.toString().equals("empty")) {
                                     entryType = GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET;
-                                    metaData.inSampleSize = 3;
-                                    bitmapOfScreenshoot = MyBitmapTools.scaleBitmap(BitmapFactory.decodeResource(c.getResources(), R.drawable.click_to_add, metaData),SREENSHOOT_WIDTH,SCREENSHOOT_HEIGHT,"-");
+                                    metaData.inSampleSize = 1;
+                                    bitmapOfScreenshoot=BitmapFactory.decodeResource(c.getResources(), R.drawable.click_to_add, metaData);
                                     numberOfScores = 0;
                                 }
 

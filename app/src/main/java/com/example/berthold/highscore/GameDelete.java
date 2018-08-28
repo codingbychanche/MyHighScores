@@ -75,6 +75,7 @@ public class GameDelete extends AppCompatActivity {
 
         // Build Dialog
         final AlertDialog.Builder chooseYesNo = new AlertDialog.Builder(this);
+
         chooseYesNo.setMessage(R.string.yesNo).setPositiveButton(R.string.yes, dialogClickListener).
                 setNegativeButton(R.string.no, dialogClickListener);
 
@@ -144,6 +145,8 @@ public class GameDelete extends AppCompatActivity {
                     StringBuffer picturePathList=DB.sqlRequest("select picture from scores where key2="+key1,MainActivity.conn);
                     String [] pl=picturePathList.toString().split("#");
 
+                    // todo: Pictures added from file system are deleted from the file system...
+                    // They are not deleted from the app's dir........
                     for (int i=0;i<=pl.length-1;i++) {
                         System.out.println("Deleting......." + pl[i]);
                         File f = new File(pl[i]);

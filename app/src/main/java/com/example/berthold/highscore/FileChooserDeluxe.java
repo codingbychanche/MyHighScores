@@ -7,11 +7,6 @@
  * @date    9.9.2017
  */
 
-
-/*
- * ToDo: App crashes when no file is selected and user leaves file chooser
- */
-
 package com.example.berthold.highscore;
 
 import android.content.Intent;
@@ -183,7 +178,6 @@ public class FileChooserDeluxe extends AppCompatActivity {
             if (currentPath.toString().equals("/")){
                 // Cancel async task, if picture thumbnails for the
                 // current dir are created....
-                task.cancel(true);
                 finishIt();
             } else {
                 File parent = currentPath.getParentFile();
@@ -228,6 +222,7 @@ public class FileChooserDeluxe extends AppCompatActivity {
         public void finishIt()
         {
             // Enter the caller class's name here (second parameter)
+            task.cancel(true);
             Intent i=new Intent(FileChooserDeluxe.this,MainActivity.class);
             i.putExtra("path",currentPath.toString());
             setResult(RESULT_OK,i);

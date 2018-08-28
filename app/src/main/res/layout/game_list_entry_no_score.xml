@@ -9,13 +9,17 @@
 
 
     <ImageView
+
         android:id="@+id/gameScreenShoot"
         android:paddingTop="10px"
-        android:src="@drawable/click_to_add"
         android:paddingBottom="5px"
         android:paddingLeft="5px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+        android:layout_width="300px"
+        android:layout_height="200px"
+
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/tvGameName"

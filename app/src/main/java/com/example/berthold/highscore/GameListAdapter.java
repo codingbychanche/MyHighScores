@@ -32,6 +32,18 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
     StringBuffer result; // Result of Db request
     DecimalFormat df=new DecimalFormat("#,###,###");
 
+    // View Holder
+
+    static class ViewHolder{
+        TextView tvName;
+        TextView tvHighScore;
+        TextView tvNumberOfScores;
+        TextView tvComment;
+        TextView tvEvaluation;
+        TextView tvDate;
+        ImageView ivScreenShoot;
+    }
+
     // Constructor
 
     public GameListAdapter(Context context, ArrayList <GameListEntry> GameListEntry) {
@@ -45,13 +57,9 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
 
             final GameListEntry item = getItem(position);
 
-            // Check if the view already exists, if not, inflate it
             // Game has scores? Yes, inflate the complete view, if not, just the title
             if (item.entryType == GameListEntry.SEARCH_RESULT_NOT_FOUND)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry_not_found, parent, false);
-
-            if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE)
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry, parent, false);
 
             if (item.entryType == GameListEntry.IS_ENTRY_WITHOUT_SCORE_YET)
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry_no_score, parent, false);
@@ -62,32 +70,41 @@ public class GameListAdapter extends ArrayAdapter <GameListEntry>{
             // If entry has scores
             if (item.entryType == GameListEntry.IS_ENTRY_WITH_SCORE) {
 
-                // Put data into view
-                final TextView tvName = (TextView) convertView.findViewById(R.id.tvGameName);
-                final TextView tvHighScore = (TextView) convertView.findViewById(R.id.tvHighScore);
+                ViewHolder holder;
 
-                final TextView tvNumberOfScores = (TextView) convertView.findViewById(R.id.scoreCount);
+                if (convertView == null) {
 
-                final TextView tvComment = (TextView) convertView.findViewById(R.id.tvComment);
-                final TextView tvEvaluation = (TextView) convertView.findViewById(R.id.tvEvaluation);
+                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.game_list_entry, parent, false);
 
-                final TextView tvDate = (TextView) convertView.findViewById(R.id.tvDate);
+                    holder=new ViewHolder();
 
-                ImageView ivScreenShoot = (ImageView) convertView.findViewById(R.id.gameScreenShoot);
+                    // Save view's in holder
+                    holder.tvName=(TextView) convertView.findViewById(R.id.tvGameName);
+                    holder.tvHighScore = (TextView) convertView.findViewById(R.id.tvHighScore);
+                    holder.tvNumberOfScores = (TextView) convertView.findViewById(R.id.scoreCount);
+                    holder.tvComment = (TextView) convertView.findViewById(R.id.tvComment);
+                    holder.tvEvaluation = (TextView) convertView.findViewById(R.id.tvEvaluation);
+                    holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
+                    holder.ivScreenShoot = (ImageView) convertView.findViewById(R.id.gameScreenShoot);
 
-                tvName.setText(item.gameName);                                  // Put name of the game into listView
+                    convertView.setTag(holder);
 
-                //tvHighScore.setText(df.format(String.valueOf(item.highScore))); // Put Highest score for this game into list view
-                tvHighScore.setText(df.format(item.highScore)); // Put Highest score for this game into list view
+                } else {
+                    // Convert view was already inflated, get view's from 'tag'
+                    holder = (ViewHolder)convertView.getTag();
+                }
 
-
-                tvComment.setText(item.comment);
-                tvEvaluation.setText(item.evaluation);
-                tvDate.setText(item.date);
-                tvNumberOfScores.setText(String.valueOf(item.numberOfScores));
-                ivScreenShoot.setImageBitmap(item.screenShoot);
+                // Init views
+                holder.tvName.setText(item.gameName);  // Put name of the game into listView
+                holder.tvHighScore.setText(df.format(item.highScore)); // Put Highest score for this game into list view
+                holder.tvComment.setText(item.comment);
+                holder.tvEvaluation.setText(item.evaluation);
+                holder.tvDate.setText(item.date);
+                holder.tvNumberOfScores.setText(String.valueOf(item.numberOfScores));
+                holder.ivScreenShoot.setImageBitmap(item.screenShoot);
 
                 // Set Screenshoot, if taken for this game and for highscore reached
+                // todo: ??????
                 result = DB.sqlRequest("select picture,max(score) from scores where key2=" + item.key1, MainActivity.conn);
                 String picturePath = result.toString().replace("#", "").trim();
             }

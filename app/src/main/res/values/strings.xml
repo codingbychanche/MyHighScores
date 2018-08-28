@@ -61,6 +61,10 @@
     <string name="not_found">Keine passenden Einträge gefunden...</string>
     <string name="end_of_list">Ende der Liste....</string>
 
+    <!-- Delete Score -->
+
+    <string name="reallyDeleteScore">Diesen Punktestand wirklich löschen?</string>
+
     <!-- Toast's -->
 
     <string name="dbloaded"> Datenbank geladen...</string>

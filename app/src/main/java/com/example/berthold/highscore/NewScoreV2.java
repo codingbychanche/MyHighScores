@@ -1,7 +1,7 @@
 package com.example.berthold.highscore;
 
 /**
- * New score
+ * Add new score
  *
  * @author Berthold Fritz 2016
  *
@@ -36,13 +36,14 @@ public class NewScoreV2 extends AppCompatActivity {
     private int IMAGE_CAPTURE=1;                // Req- code for camera usage
     private int GET_SCREENSHOOT_FROM_FILE=2;    // Req- code for screenshoot from file
 
-    private Uri imageS;             // Uri for screenshoot
-    private String pic;             // Screenshoot path
-    private int key1;               // Link to game this score belongs to
-    private String name;            // Name of the game
+    private Uri imageS;                         // Uri for screenshoot
+    private Bitmap b;                           // Bitmap of screenshot
+    private String pic;                         // Screenshoot path
+    private int key1;                           // Link to game this score belongs to
+    private String name;                        // Name of the game
 
-    private static final int PIC_WIDTH=800;     // This is the size at which the picture will saved
-    private static final int PIC_HEIGHT=500;
+    private static final int PIC_WIDTH=300;     // This is the size at which the picture will saved
+    private static final int PIC_HEIGHT=200;
     private static final int COMPRESS=100;      // Compression rate 0 means max and worst quality, 100 means best...
 
     // Debug info
@@ -64,6 +65,7 @@ public class NewScoreV2 extends AppCompatActivity {
         // Debug
         tag=NewScoreV2.class.getSimpleName();
 
+        // Get key1 for this game
         Bundle extra=getIntent().getExtras();
         key1=extra.getInt("key1");
         name=extra.getString("name");
@@ -148,7 +150,6 @@ public class NewScoreV2 extends AppCompatActivity {
 
     /**
      * Start Camera
-     *
      */
 
     private void startCamara()
@@ -230,9 +231,6 @@ public class NewScoreV2 extends AppCompatActivity {
      * and camera has finished. It writes the uri of the taken
      * picture into the db's 'pic' field
      *
-     * @global  pictureKey  This key is the key for the score entry matching the picture
-     *                      just taken.
-     *
      */
 
     @Override
@@ -251,20 +249,10 @@ public class NewScoreV2 extends AppCompatActivity {
                     String path = (f.getAbsolutePath() + "/"+name+"_"+System.currentTimeMillis());
 
                     // Get image just taken and save it compressed
-                    // This only reduces the quality and the memory footprint, but not
-                    // the size of the picture taken!
                     FileOutputStream fos=new FileOutputStream(path);
-                    Bitmap b = MyBitmapTools.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), imageS),PIC_WIDTH,PIC_HEIGHT,"-");
+                    b = MyBitmapTools.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), imageS),PIC_WIDTH,PIC_HEIGHT,"-");
                     b.compress(Bitmap.CompressFormat.JPEG,COMPRESS,fos);
                     fos.close();
-
-                    // Show picture just taken
-                    ImageButton photo=(ImageButton)findViewById(R.id.kamera);
-                    BitmapFactory.Options metaData = new BitmapFactory.Options();
-                    metaData.inJustDecodeBounds = false;
-                    metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
-                    b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(path, metaData),PIC_WIDTH,PIC_HEIGHT,"-");
-                    photo.setImageBitmap(b);
 
                     // Set global picture path
                     pic=path;
@@ -278,6 +266,7 @@ public class NewScoreV2 extends AppCompatActivity {
         }
 
         // Picture chosen from file?
+        // ToDo: Set right compression rate.... Same as for "picture taken with camera" => speeds up list view...
         if (requestCode==GET_SCREENSHOOT_FROM_FILE ){
             if (data.hasExtra("path")) {
 
@@ -292,23 +281,20 @@ public class NewScoreV2 extends AppCompatActivity {
                     String savePath = (f.getAbsolutePath() + "/" + name + "_" + System.currentTimeMillis());
 
                     // Get image just taken and save it compressed
-                    // This only reduces the quality and the memory footprint, but not
-                    // the size of the picture taken!
                     BitmapFactory.Options metaData = new BitmapFactory.Options();
                     metaData.inJustDecodeBounds = false;
-                    metaData.inSampleSize = 1;       // Scale image down in size and reduce it's memory footprint
+                    metaData.inSampleSize = 1;
 
                     FileOutputStream fos = new FileOutputStream(savePath);
-                    Bitmap b = MyBitmapTools.scaleBitmap(BitmapFactory.decodeFile(pic, metaData), PIC_WIDTH, PIC_HEIGHT, "-");
-                    b.compress(Bitmap.CompressFormat.JPEG, COMPRESS, fos);
+                    b = BitmapFactory.decodeFile(pic, metaData);
+                    b.compress(Bitmap.CompressFormat.JPEG, 1, fos);
                     fos.close();
-
-                    // Show picture just taken
-                    ImageButton photo=(ImageButton)findViewById(R.id.kamera);
-                    photo.setImageBitmap(b);
 
                 } catch (Exception f) {}
             }
         }
+        // Show picture just taken
+        ImageButton photo=(ImageButton)findViewById(R.id.kamera);
+        photo.setImageBitmap(b);
     }
 }

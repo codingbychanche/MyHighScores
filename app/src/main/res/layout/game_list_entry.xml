@@ -24,7 +24,7 @@
         android:layout_height="200px"
 
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"/>
 
     <ImageView
         android:id="@+id/calendar"

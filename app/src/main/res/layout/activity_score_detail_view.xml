@@ -16,9 +16,7 @@
             android:layout_height="400px"
 
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-
-            android:background="@color/colorSepparator"/>
+            android:scaleType="fitCenter" />
 
         <ProgressBar
             android:id="@+id/pic_progress"

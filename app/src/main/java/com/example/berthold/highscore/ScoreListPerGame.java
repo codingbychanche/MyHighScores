@@ -40,13 +40,13 @@ import java.text.DecimalFormat;
 
 public class ScoreListPerGame extends AppCompatActivity {
 
-    private ListView myListView;
-    private ArrayAdapter myListAdapter;
-    private int key1;
+    private ListView        myListView;
+    private ArrayAdapter    myListAdapter;
+    private int             key1;
 
-    StringBuffer result;
-    String [] rs;
-    String [] r;
+    StringBuffer    result;
+    String []       rs;
+    String []       r;
 
     String date;
 
@@ -73,12 +73,11 @@ public class ScoreListPerGame extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         key1 = extra.getInt("key1");
         final String name = extra.getString("name");
-        System.out.println("----- recieved key 1:" + name);
 
         // Show game title in action bar
         getSupportActionBar().setTitle(name);
 
-        // Gui
+        // Add new score?
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.save_score);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.fab_bounce);
 
@@ -92,13 +91,28 @@ public class ScoreListPerGame extends AppCompatActivity {
             }
         });
 
+        // Delete score?
+        FloatingActionButton deleteScore=(FloatingActionButton) findViewById(R.id.delete_score);
+
+        deleteScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(view.getContext(),ScoreDelete.class);
+                i.putExtra("key1",key1);
+                i.putExtra("name",name);
+                view.getContext().startActivity(i);
+            }
+        });
+
         // Get data
-        result = DB.sqlRequest("select key1,score,date,picture,comment,evaluation from scores where key2=" + key1 + " order by date DESC", MainActivity.conn);
+        result = DB.sqlRequest("select key1,score,date,picture,comment,evaluation from scores where key2=" + key1 + " order by score DESC", MainActivity.conn);
         rs = result.toString().split("#");              // Get rows
         StringBuffer niceResult=new StringBuffer();     // Will contain date and score in a user- readable format
 
         if (!rs[0].equals("empty")) {
             fab.clearAnimation();
+            deleteScore.show();
+
             for (int i = 0; i < rs.length; i++) {
                 r = rs[i].toString().split(",");       // Separate fields
 
@@ -112,11 +126,7 @@ public class ScoreListPerGame extends AppCompatActivity {
                 niceResult.append(df.format(Integer.decode(r[1])) + "\n" + date + ",");
             }
 
-            // Show List
-            myListView = (ListView) findViewById(R.id.scoreList);
-            String[] rr = niceResult.toString().split(",");
-            myListAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, rr);
-            myListView.setAdapter(myListAdapter);
+            showList(niceResult);
 
             // Item clicked? If yes, open detail view.....
             // We need the key1 value of the selected score row which
@@ -133,16 +143,32 @@ public class ScoreListPerGame extends AppCompatActivity {
                     Intent in = new Intent(view.getContext(), ScoreDetailView.class);
                     in.putExtra("key1",k1);
                     in.putExtra("game",name);
-                    in.putExtra("date",date);
+                    in.putExtra("date",FormatTimeStamp.german(r[2], FormatTimeStamp.WITH_TIME));
                     in.putExtra("score",df.format(Integer.decode(r[1])));
                     in.putExtra("picpath",r[3]);
 
-                    if (r.length==5) in.putExtra("comment",r[4]);
-                    if (r.length==6) in.putExtra("evaluation",r[5]);
+                    if (r.length>4) in.putExtra("comment",r[4]);
+                    if (r.length>5) in.putExtra("evaluation",r[5]);
 
                     view.getContext().startActivity(in);
                 }
             });
-        } else fab.startAnimation(animation);
+        } else {
+            niceResult.append("Keine Einträge...");
+            fab.startAnimation(animation);
+            deleteScore.hide();
+            showList(niceResult);
+        }
+    }
+
+    /**
+     * Show list
+     */
+
+    private void showList(StringBuffer niceResult){
+        myListView = (ListView) findViewById(R.id.scoreList);
+        String[] rr = niceResult.toString().split(",");
+        myListAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, rr);
+        myListView.setAdapter(myListAdapter);
     }
 }

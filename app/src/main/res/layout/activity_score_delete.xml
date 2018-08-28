@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-  ~ activity_score_list_per_game.xml
-  ~
-  ~ Created by Berthold Fritz
-  ~
-  ~ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
-  ~ https://creativecommons.org/licenses/by-nc-sa/4.0/
-  ~
-  ~ Last modified 8/28/18 4:11 PM
-  -->
-
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,24 +7,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.example.berthold.highscore.ScoreListPerGame">
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/save_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="@android:color/holo_blue_bright" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/delete_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@android:color/holo_blue_bright"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <RelativeLayout
         android:layout_width="match_parent"
