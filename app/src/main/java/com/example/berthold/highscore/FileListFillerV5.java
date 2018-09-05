@@ -12,8 +12,6 @@ package com.example.berthold.highscore;
  * added the user can already browse the files....
  *
  *  THIS VERSION WILL BE MAINTAINED! OTHER VERSIONS WILL NOT!!!!!
- *
- *  @author  Berthold Fritz 2017
  */
 
 import android.content.Context;

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ game_list_entry.xml
+  ~
+  ~ Created by Berthold Fritz
+  ~
+  ~ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+  ~ https://creativecommons.org/licenses/by-nc-sa/4.0/
+  ~
+  ~ Last modified 1/14/18 12:01 AM
+  -->
+
 <!-- This is the layout for one row in our game list list -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,85 +37,77 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"/>
 
+    <View
+        android:layout_width="2dp"
+        android:layout_toRightOf="@+id/gameScreenShoot"
+        android:layout_height="match_parent"
+        android:background="@color/colorSepparator">
+    </View>
+
     <ImageView
-        android:id="@+id/calendar"
-        android:src="@android:drawable/ic_menu_my_calendar"
+        android:id="@+id/arrow"
+        android:layout_toRightOf="@id/nameOfGame"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/ic_media_play"/>
+
+    <View
+        android:layout_width="2dp"
+        android:layout_toLeftOf="@+id/arrow"
+        android:layout_height="match_parent"
+        android:background="@color/colorSepparator">
+    </View>
 
     <TextView
-        android:id="@+id/tvDate"
-        android:textSize="25px"
-        android:textColor="@color/shellText"
+        android:id="@+id/scoreCount"
         android:textStyle="bold"
-        android:paddingLeft="25px"
-        android:paddingTop="10px"
-        android:layout_toRightOf="@+id/calendar"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="20px"
+        android:paddingRight="1px"
+        android:layout_toLeftOf="@id/arrow"/>
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/gameScreenShoot"
+        android:paddingLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/date_played" />
-
-    <TextView
-        android:id="@+id/tvGameName"
-        android:textSize="25px"
-        android:textStyle="bold"
-        android:paddingLeft="10px"
-        android:paddingTop="10px"
-        android:layout_toRightOf="@id/gameScreenShoot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/arrow"
-            android:layout_toRightOf="@id/nameOfGame"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_media_play"/>
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/scoreCount"
+            android:id="@+id/tvHighScore"
+            android:textSize="35px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvGameName"
+            android:textSize="25px"
             android:textStyle="bold"
-            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:textSize="25px"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="20px"
-            android:paddingRight="1px"
-            android:layout_toLeftOf="@id/arrow"/>
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/tvHighScore"
-        android:textSize="35px"
-        android:paddingLeft="10px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvGameName"
-        android:layout_toRightOf="@+id/gameScreenShoot"/>
+        <TextView
+            android:id="@+id/tvComment"
+            android:textSize="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/tvComment"
-        android:textSize="25px"
-        android:textStyle="bold"
-        android:textColor="@color/shellText"
-        android:paddingLeft="10px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10px"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
-
-    <TextView
-        android:id="@+id/tvEvaluation"
-        android:textSize="25px"
-        android:textStyle="bold"
-        android:textColor="@color/shellText"
-        android:paddingLeft="10px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="40px"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        <TextView
+            android:id="@+id/tvEvaluation"
+            android:textSize="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

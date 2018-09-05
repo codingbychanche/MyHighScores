@@ -1,13 +1,20 @@
 package com.example.berthold.highscore;
 
+/*
+ * DB.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 12/8/17 9:32 PM
+ */
+
 /**
  * DB Class
  * 
  * This class handled all SQL- requests CreateDB
- * 
- * @author Berthold Fritz 2016
- * @param args -
- *
  */
 
 import android.util.Log;

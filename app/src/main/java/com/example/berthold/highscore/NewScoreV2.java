@@ -1,10 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * NewScoreV2.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 1/27/18 6:20 PM
+ */
+
 /**
  * Add new score
- *
- * @author Berthold Fritz 2016
- *
  */
 
 import android.content.ContentValues;
@@ -42,9 +50,8 @@ public class NewScoreV2 extends AppCompatActivity {
     private int key1;                           // Link to game this score belongs to
     private String name;                        // Name of the game
 
-    private static final int PIC_WIDTH=300;     // This is the size at which the picture will saved
-    private static final int PIC_HEIGHT=200;
-    private static final int COMPRESS=100;      // Compression rate 0 means max and worst quality, 100 means best...
+    private static final int PIC_WIDTH=600;     // This is the size at which the picture will saved
+    private static final int PIC_HEIGHT=300;
 
     // Debug info
     String tag;
@@ -243,15 +250,22 @@ public class NewScoreV2 extends AppCompatActivity {
             if(resultCode==RESULT_OK) {
                 try
                 {
-                    File f = getFilesDir();
+                    File f=MainActivity.getWorkingDirPictures();
                     // Build files path- name, make it unique by adding system time....
                     // This way we can save a screenshoot for every score recorded
-                    String path = (f.getAbsolutePath() + "/"+name+"_"+System.currentTimeMillis());
+                    String path = (f.getAbsolutePath() + "/"+name+"_"+System.currentTimeMillis()+".jpg");
 
                     // Get image just taken and save it compressed
                     FileOutputStream fos=new FileOutputStream(path);
-                    b = MyBitmapTools.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), imageS),PIC_WIDTH,PIC_HEIGHT,"-");
-                    b.compress(Bitmap.CompressFormat.JPEG,COMPRESS,fos);
+                    b = MediaStore.Images.Media.getBitmap(getContentResolver(), imageS); // Get Pic
+
+                        // ToDo
+                        // This should improve performance significantly!
+                        // ListView would be much slower if we did not compress the picture
+                        // data.....
+                        int sampleSize=MyBitmapTools.calcSampleSize(b.getHeight(),b.getWidth(),PIC_WIDTH,PIC_HEIGHT);
+                        b.compress(Bitmap.CompressFormat.JPEG,25,fos);                        // Save Pic
+
                     fos.close();
 
                     // Set global picture path
@@ -275,20 +289,32 @@ public class NewScoreV2 extends AppCompatActivity {
                 pic=path;
 
                 try {
-                    File f = getFilesDir();
+                    File f=MainActivity.getWorkingDirPictures();
                     // Build files path- name, make it unique by adding system time....
                     // This way we can save a screenshoot for every score recorded
-                    String savePath = (f.getAbsolutePath() + "/" + name + "_" + System.currentTimeMillis());
+                    String savePath = (f.getAbsolutePath() + "/" + name + "_" + System.currentTimeMillis()+".jpg");
+                    Log.v("---Saving....",savePath);
 
                     // Get image just taken and save it compressed
                     BitmapFactory.Options metaData = new BitmapFactory.Options();
-                    metaData.inJustDecodeBounds = false;
-                    metaData.inSampleSize = 1;
 
-                    FileOutputStream fos = new FileOutputStream(savePath);
-                    b = BitmapFactory.decodeFile(pic, metaData);
-                    b.compress(Bitmap.CompressFormat.JPEG, 1, fos);
+                        // ToDo
+                        // This should improve performance significantly!
+                        // ListView would be much slower if wi did not compress the picture
+                        // data.....
+                        int sampleSize;
+                        metaData.inJustDecodeBounds = true;
+                        b = BitmapFactory.decodeFile(pic,metaData);
+                        sampleSize=MyBitmapTools.calcSampleSize(metaData.outHeight,metaData.outWidth,PIC_HEIGHT,PIC_WIDTH);
+
+                        metaData.inSampleSize=sampleSize;
+                        metaData.inJustDecodeBounds=false;
+                        b = BitmapFactory.decodeFile(pic,metaData);
+                        FileOutputStream fos = new FileOutputStream(savePath);
+                        b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
                     fos.close();
+                    pic=savePath;
 
                 } catch (Exception f) {}
             }

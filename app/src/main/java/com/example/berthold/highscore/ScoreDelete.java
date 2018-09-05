@@ -1,9 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * ScoreDelete.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 1/18/18 10:04 PM
+ */
+
 /**
  * Delete score and, if taken, it's screenshot
- *
- * @author Berthold Fritz 2016
  */
 
 import android.content.DialogInterface;
@@ -12,6 +21,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -137,6 +147,9 @@ public class ScoreDelete extends AppCompatActivity {
                 // delete score
 
                 s.executeUpdate("delete from scores where key1=" + key1OfScoreEntry);
+                Log.v("Delete Picture:",r[3]);
+                File f=new File(r[3]);
+                f.delete();
 
                 // Restart activity (and show updated list of scores to allow another one
                 // to be deleted or to go back to main

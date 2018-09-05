@@ -20,6 +20,7 @@ package com.example.berthold.highscore;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -44,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Logcat
     private static String tag;
+
+    // File system
+    private static File workingDir;
+    private static String appDir="MyHigscores";       // App's working dir..
+
+    private static File workingDirPictures;            // All screenshoots go here
+    private static String picDir="Screenshoots";
 
     // Database
     public static Connection conn;
@@ -87,11 +95,27 @@ public class MainActivity extends AppCompatActivity {
         // Debug
         tag="Debug: Main";
 
-        // Create DB
-        String dbName = "/highscores";
+        // File system
+        //
+        // This creates a folder for this app and subFolders for asociated data
+        // (Pictures, import files, export files etc.....)
+        //
+        // This seems to be the best practice. It creates a public folder.
+        // This folder will not be deleted when the app is de- installed
+        workingDir= Environment.getExternalStoragePublicDirectory(appDir);
+        Log.v("---Working dir",workingDir.getAbsolutePath());
+        workingDir.mkdirs(); // Create dir, if it does not already exist
 
-        File f = getFilesDir();
-        path = (f.getAbsolutePath() + dbName);
+        workingDirPictures=Environment.getExternalStoragePublicDirectory(appDir+"/"+picDir);
+        Log.v("---Screenshoots",workingDirPictures.getAbsolutePath());
+        workingDirPictures.mkdirs(); // Create dir, if it does not already exist
+
+        // Create DB
+        String dbName = "/HighScoresDB";
+
+        //File f = getFilesDir();
+        //path = (f.getAbsolutePath() + dbName);
+        path=(workingDir.getAbsolutePath()+dbName);
 
         try {
             CreateDB.make(path);
@@ -300,6 +324,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Get Working dir's path
+     *
+     */
+
+    public static File getWorkingDir() {return workingDir;}
+
+
+    /**
+     * Get Screenshoot dir's path
+     *
+     */
+
+    public static File getWorkingDirPictures(){return workingDirPictures;}
 }
 
 

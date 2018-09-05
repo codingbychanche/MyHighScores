@@ -1,10 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * About.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 5/17/17 10:47 AM
+ */
+
 /**
  * About
- *
- *
- *
  */
 
 import android.content.Intent;

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--
+  ~ activity_debug_dbadmin.xml
+  ~
+  ~ Created by Berthold Fritz
+  ~
+  ~ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+  ~ https://creativecommons.org/licenses/by-nc-sa/4.0/
+  ~
+  ~ Last modified 3/17/17 10:01 PM
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_debug_dbadmin"
     android:layout_width="match_parent"
@@ -11,109 +24,119 @@
     android:background="@color/colorPrimary"
     tools:context="com.example.berthold.highscore.DebugDBAdmin">
 
-    <TextView
-        android:id="@+id/shellOutput"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100pt"
-        android:textColor="@color/shellText"
-        android:scrollbars="vertical"
-        android:maxLines="15"
-        android:background="@color/colorShellOutput"/>
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <ScrollView
+            android:id="@+id/shell"
+            android:layout_width="match_parent"
+            android:background="@color/colorShellOutput"
+            android:layout_height="200dp">
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_below="@id/shellOutput"
-        android:layout_height="5dp"
-        android:background="@color/colorPrimaryDark"/>
+            <TextView
+                android:id="@+id/shellOutput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/shellText"
+                android:background="@color/colorShellOutput"/>
+        </ScrollView>
 
-    <EditText
-        android:id="@+id/shellInput"
-        android:textColor="@color/shellText"
-        android:background="@color/colorShellOutput"
-        android:layout_below="@id/line"
-        android:lines="3"
-        android:hint="SQL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_below="@id/shell"
+            android:layout_height="5dp"
+            android:background="@color/colorPrimaryDark"/>
 
+        <EditText
+            android:id="@+id/shellInput"
+            android:textColor="@color/shellText"
+            android:background="@color/colorShellOutput"
+            android:layout_below="@id/line"
+            android:lines="3"
+            android:hint="SQL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/insertSelect"
-        android:text="select"
-        android:layout_below="@id/shellInput"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <Button
-        android:id="@+id/insertStar"
-        android:text="*"
-        android:layout_toRightOf="@id/insertSelect"
-        android:layout_below="@id/shellInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertSelect"
+            android:text="select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/insertFrom"
-        android:text="from"
-        android:layout_below="@id/shellInput"
-        android:layout_toRightOf="@id/insertStar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertStar"
+            android:text="*"
+            android:layout_toRightOf="@id/insertSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/insertWhere"
-        android:text="where"
-        android:layout_below="@id/insertSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertFrom"
+            android:text="from"
+            android:layout_toRightOf="@id/insertStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/insertEqual"
-        android:text="="
-        android:layout_toRightOf="@id/insertWhere"
-        android:layout_below="@id/insertSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertWhere"
+            android:text="where"
+            android:layout_below="@id/insertSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/insertHyp"
-        android:text="'"
-        android:layout_toRightOf="@id/insertEqual"
-        android:layout_below="@id/insertSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertEqual"
+            android:text="="
+            android:layout_toRightOf="@id/insertWhere"
+            android:layout_below="@id/insertSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/insertPercent"
-        android:text="%"
-        android:layout_toRightOf="@id/insertHyp"
-        android:layout_below="@id/insertSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertHyp"
+            android:text="'"
+            android:layout_toRightOf="@id/insertEqual"
+            android:layout_below="@id/insertSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/insertlike"
-        android:text="like"
-        android:layout_below="@id/insertWhere"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertPercent"
+            android:text="%"
+            android:layout_toRightOf="@id/insertHyp"
+            android:layout_below="@id/insertSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <ImageButton
-        android:id="@+id/runSql"
-        android:layout_below="@id/insertlike"
-        android:src="@android:drawable/ic_media_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/insertlike"
+            android:text="like"
+            android:layout_below="@id/insertWhere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <ImageButton
-        android:id="@+id/clearCommand"
-        android:layout_below="@id/insertlike"
-        android:layout_toRightOf="@id/runSql"
-        android:src="@android:drawable/ic_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/runSql"
+            android:layout_below="@id/insertlike"
+            android:src="@android:drawable/ic_media_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-
-
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/clearCommand"
+            android:layout_below="@id/insertlike"
+            android:layout_toRightOf="@id/runSql"
+            android:src="@android:drawable/ic_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

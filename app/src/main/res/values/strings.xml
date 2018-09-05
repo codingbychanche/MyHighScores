@@ -50,8 +50,12 @@
 
     <string name="info">Berthold Fritz 2016</string>
     <string name="licence"> Sie dürfen diese App frei nutzen und weitergeben. Der Komerzielle
-                            Vertrieb wird hiermit <ustrikt /> untersagt.</string>
+                            Vertrieb wird hiermit untersagt</string>
     <string name="title_activity_settings">Settings</string>
+
+    <string name="cc_by">This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+    https://creativecommons.org/licenses/by-nc-sa/4.0/</string>
+
     <string name="databaseInfo">Inhalt:</string>
 
     <!-- Game list entry in main activity -->

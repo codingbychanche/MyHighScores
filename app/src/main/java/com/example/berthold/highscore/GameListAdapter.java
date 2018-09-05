@@ -1,12 +1,21 @@
 package com.example.berthold.highscore;
 
+/*
+ * GameListAdapter.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 1/26/18 11:03 PM
+ */
+
 /**
  * Adapter class for game- list
  *
  * This code creates each row of our game list, every time a new entry
  * is made.
- *
- *  @author  Berthold Fritz 2016
  */
 
 import android.content.Context;

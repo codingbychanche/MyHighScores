@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--
+  ~ activity_about.xml
+  ~
+  ~ Created by Berthold Fritz
+  ~
+  ~ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+  ~ https://creativecommons.org/licenses/by-nc-sa/4.0/
+  ~
+  ~ Last modified 4/14/17 11:46 PM
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:id="@+id/activity_about"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +33,6 @@
 
     <TextView
         android:id="@+id/license"
-        android:layout_below="@id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/licence"/>
@@ -28,22 +40,26 @@
     <ImageView
         android:id="@+id/ccBY"
         android:paddingTop="10dp"
-        android:layout_below="@+id/license"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:src="@drawable/cc_by"/>
+
+    <TextView
+        android:id="@+id/cc_by_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cc_by"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/ccBY"
         android:paddingBottom="10dp"
         android:background="@color/colorSepparator">
     </View>
 
     <TextView
         android:id="@+id/thirdPartyText"
-        android:layout_below="@id/ccBY"
         android:paddingBottom="10sp"
         android:text="H2 Database Engine:"
         android:textStyle="bold"
@@ -52,7 +68,6 @@
 
     <TextView
         android:id="@+id/thirdParty"
-        android:layout_below="@id/thirdPartyText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="This software contains unmodified binary redistributions for
@@ -66,14 +81,12 @@ http://www.h2database.com/html/license.html"/>
         android:id="@+id/secondSep"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/thirdParty"
         android:paddingBottom="10dp"
         android:background="@color/colorSepparator">
     </View>
 
     <TextView
         android:id="@+id/infoText"
-        android:layout_below="@+id/secondSep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
@@ -81,7 +94,6 @@ http://www.h2database.com/html/license.html"/>
         android:text="@string/databaseInfo"/>
     <TextView
         android:id="@+id/dataBaseInfo"
-        android:layout_below="@id/infoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -100,4 +112,4 @@ http://www.h2database.com/html/license.html"/>
         android:background="@color/colorSepparator">
     </View>
 
-</RelativeLayout>
+</LinearLayout>

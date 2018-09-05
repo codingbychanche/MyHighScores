@@ -1,9 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * GameDelete.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 2/27/18 8:51 PM
+ */
+
 /**
  * Deletes the selected game and all of it's scores
- *
- * @author Berthold Fritz 2016
  */
 
 import android.content.DialogInterface;

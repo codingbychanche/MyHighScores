@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ activity_new_score.xml
+  ~
+  ~ Created by Berthold Fritz
+  ~
+  ~ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+  ~ https://creativecommons.org/licenses/by-nc-sa/4.0/
+  ~
+  ~ Last modified 1/6/18 8:45 PM
+  -->
+
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,10 +33,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--
-    <include layout="@layout/content_new_score" />
-    -->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -39,11 +47,11 @@
         <ImageButton
             android:id="@+id/kamera"
             android:layout_width="match_parent"
-            android:layout_height="400px"
+            android:layout_height="wrap_content"
 
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-
+            android:scaleType="centerInside"
+            android:src="@drawable/no_picture_taken_yet"
             android:layout_below="@+id/score" />
 
         <ImageView
@@ -61,7 +69,7 @@
             android:layout_below="@+id/camicon"
             android:layout_centerHorizontal="true"
             android:text="@string/camara_help"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content" />
 
         <Button
@@ -76,7 +84,7 @@
             android:paddingTop="20dp"
             android:layout_below="@+id/getscreenshootfromfile"
             android:hint="@string/comment"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content" />
 
         <EditText
@@ -97,10 +105,5 @@
             android:layout_gravity="top|end"
             app:srcCompat="@android:drawable/ic_menu_save"
             app:backgroundTint="@android:color/holo_blue_bright" />
-
-    <GridLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
 </android.support.design.widget.CoordinatorLayout>

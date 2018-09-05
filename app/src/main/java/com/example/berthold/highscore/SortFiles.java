@@ -1,11 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * SortFiles.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 1/2/18 2:05 PM
+ */
+
 /**
  * Sort files
- *
- * Just does, what it's name promises
- *
- * Created by Berthold on 10/24/17.
  */
 
 import java.io.File;

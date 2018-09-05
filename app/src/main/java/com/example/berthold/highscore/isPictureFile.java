@@ -1,10 +1,20 @@
 package com.example.berthold.highscore;
 
+/*
+ * isPictureFile.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 1/2/18 2:19 PM
+ */
+
 /**
  * Checks filename for extension jpg etc...
- *
- * Created by Berthold on 8/18/17.
  */
+
 
 public class isPictureFile {
 

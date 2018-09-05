@@ -1,13 +1,21 @@
 package com.example.berthold.highscore;
 
+/*
+ * CreateDB.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 2/9/18 3:11 PM
+ */
+
 /**
  * Create.
  * 
  * This creates a new, empty, database if no database of the same
  * name already exists.
- * 
- * @author Berthold Fritz 2016
- *
  */
 
 import android.util.Log;

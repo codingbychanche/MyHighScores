@@ -1,10 +1,18 @@
 package com.example.berthold.highscore;
 
+/*
+ * NewGame.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 6/18/17 1:11 PM
+ */
+
 /**
  * Add a new game
- *
- * @author  Berthold Fritz 2016
- *
  */
 
 import android.content.Intent;

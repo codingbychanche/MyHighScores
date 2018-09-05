@@ -1,13 +1,21 @@
+package com.example.berthold.highscore;
+
+/*
+ * DebugDBAdmin.java
+ *
+ * Created by Berthold Fritz
+ *
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * Last modified 12/8/17 9:32 PM
+ */
+
 /**
  * Debug DB
  *
  * Provides an simple interface to test sql qerry's on the db
- *
- * @author Berthold Fritz 12/2017
- *
  */
-
-package com.example.berthold.highscore;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -29,15 +37,13 @@ public class DebugDBAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_debug_dbadmin);
 
         // Show titel
-
         getSupportActionBar().setTitle("SQL- Konsole");
 
         // Run SQL?
-
         ImageButton startConsole=(ImageButton) findViewById(R.id.runSql);
         final EditText sqlCommand=(EditText) findViewById(R.id.shellInput);
         final TextView output=(TextView) findViewById(R.id.shellOutput);
-        output.setMovementMethod (new ScrollingMovementMethod());
+        //output.setMovementMethod (new ScrollingMovementMethod());
 
         startConsole.setOnClickListener(new View.OnClickListener() {
             @Override
